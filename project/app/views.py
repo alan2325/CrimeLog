@@ -8,19 +8,19 @@ import re
 
 # Create your views here.
 
-def get_client(req):
+def get_user(req):
     data=User.objects.get(Email=req.session['user'])
     return data
 
 
-def get_advocate(req):
+def get_police(req):
     data=Police.objects.get(Email=req.session['police'])
     return data
 
 def login(req):
     if 'user' in req.session:
         return redirect(userhome)
-    if 'advocate' in req.session:
+    if 'police' in req.session:
         return redirect(policehome)
     
 
@@ -33,7 +33,7 @@ def login(req):
             return redirect(userhome)
         except User.DoesNotExist:
             data=Police.objects.get(Email=Email,password=password)
-            req.session['advocate']=data.Email
+            req.session['police']=data.Email
 
             return redirect(policehome)
     else:
@@ -44,8 +44,8 @@ def login(req):
 def logout(req):
     if 'user' in req.session:
         del req.session['user']
-    if 'advocate' in req.session:
-        del req.session['advocate']
+    if 'police' in req.session:
+        del req.session['police']
     return redirect(login)
 
 
@@ -62,19 +62,19 @@ def user_reg(req):
             validate_email(email)
         except ValidationError:
             messages.warning(req, "Invalid email format, please enter a valid email.")
-            return render(req, 'clientreg.html')
+            return render(req, 'uuser/ser_reg.html')
 
         # Validate phone number (assuming 10-digit numeric format)
         if not re.match(r'^\d{10}$', phonenumber):
             messages.warning(req, "Invalid phone number. Please enter a valid 10-digit phone number.")
-            return render(req, 'clientreg.html')
+            return render(req, 'user/user_reg.html')
         try:
-            data=Client.objects.create(username=name,Email=email,phonenumber=phonenumber,location=location,password=password)
+            data=User.objects.create(username=name,Email=email,phonenumber=phonenumber,location=location,password=password)
             data.save()
             return redirect(login)
         except:
             messages.warning(req, "Email Already Exits , Try Another Email.")
-    return render(req,'user_reg.html')
+    return render(req,'user/user_reg.html')
 
 
 def userhome(req):
