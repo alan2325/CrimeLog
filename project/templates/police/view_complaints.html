@@ -111,7 +111,7 @@
                 <!-- Left links -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../view_complaints">view Complaint</a>
+                        <a class="nav-link" href="../view_complaints">View Complaint</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../history">View History</a>
@@ -156,5 +156,26 @@
             </div>
         </div>
     </nav>
+
+    <h2>Complaints Assigned to You</h2>
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Subject</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+        {% for complaint in complaints %}
+        <tr>
+            <td>{{ complaint.user.username }}</td>
+            <td>{{ complaint.subject }}</td>
+            <td>{{ complaint.description }}</td>
+            <td>{{ complaint.status }}</td>
+            <td>{{ complaint.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
 </body>
 </html>

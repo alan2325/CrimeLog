@@ -97,7 +97,7 @@
     <nav id="nav" class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
             <!-- Logo -->
-            <a class="navbar-brand" href="../policehome">
+            <a class="navbar-brand" href="../userhome">
                 <img id="logo" src="../static/images/logo.png" alt="Logo">
             </a>
 
@@ -111,7 +111,7 @@
                 <!-- Left links -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../view_complaints">view Complaint</a>
+                        <a class="nav-link" href="../submit_complaint">Give Complaint</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../history">View History</a>
@@ -137,7 +137,7 @@
                 <!-- Profile Dropdown -->
                 <div class="dropdown ms-3">
                     <button class="btn btn-link dropdown-toggle p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="static/images/profile.png" alt="Profile" class="profile-img">
+                        <img src="../static/images/profile.png" alt="Profile" class="profile-img">
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li class="text-center">
@@ -156,5 +156,26 @@
             </div>
         </div>
     </nav>
+
+    <h2>Submit a Complaint</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="subject">Subject:</label>
+        <input type="text" name="subject" id="subject" required>
+        <br>
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" required></textarea>
+        <br>
+        <label for="police">Select Police Officer:</label>
+        <select name="police" id="police" required>
+            <option value="" disabled selected>Select Officer</option>
+            {% for officer in police_officers %}
+                <option value="{{ officer.id }}">{{ officer.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">Submit Complaint</button>
+    </form>
+    
 </body>
 </html>

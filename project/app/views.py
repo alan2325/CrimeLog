@@ -62,7 +62,7 @@ def user_reg(req):
             validate_email(email)
         except ValidationError:
             messages.warning(req, "Invalid email format, please enter a valid email.")
-            return render(req, 'uuser/ser_reg.html')
+            return render(req, 'user/user_reg.html')
 
         # Validate phone number (assuming 10-digit numeric format)
         if not re.match(r'^\d{10}$', phonenumber):
@@ -77,13 +77,35 @@ def user_reg(req):
     return render(req,'user/user_reg.html')
 
 
+def police_reg(req):
+    if req.method=='POST':
+        name=req.POST['name']
+        email=req.POST['Email']
+        password=req.POST['password']
+         # Validate email
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.warning(req, "Invalid email format, please enter a valid email.")
+            return render(req, 'police/police_reg.html')
+
+        # Validate phone number (assuming 10-digit numeric format)
+        try:
+            data=Police.objects.create(name=name,Email=email,password=password)
+            data.save()
+            return redirect(login)
+        except:
+            messages.warning(req, "Email Already Exits , Try Another Email.")
+    return render(req,'police/police_reg.html')
+
+
 def userhome(req):
     if 'user' in req.session:
         return render(req,'user/home.html')
     
 def policehome(req):
-    if 'user' in req.session:
-        return redirect(policehome)
+    if 'police' in req.session:
+        return render(req,'police/home.html')
     
 def usersearch(request):
     query = request.GET.get('query') 
@@ -92,3 +114,42 @@ def usersearch(request):
         products = User.objects.filter(name__icontains=query)
         
     return render(request, 'user/usersearch.html', {'products': products, 'query': query})
+
+
+def submit_complaint(req):
+    if 'user' not in req.session:
+        return redirect(login)  # Ensure the user is logged in
+
+    user = get_user(req)
+    police_officers = Police.objects.all()  # Fetch all police officers for assignment
+
+    if req.method == 'POST':
+        subject = req.POST['subject']
+        description = req.POST['description']
+        police_id = req.POST.get('police')
+
+        if not subject or not description or not police_id:
+            messages.warning(req, "All fields are required!")
+            return redirect(submit_complaint)
+
+        police = Police.objects.get(id=police_id)
+        complaint = Complaint.objects.create(
+            user=user,
+            police=police,
+            subject=subject,
+            description=description
+        )
+        complaint.save()
+        messages.success(req, "Complaint submitted successfully.")
+        return redirect(userhome)
+
+    return render(req, 'user/submit_complaint.html', {'police_officers': police_officers})
+
+
+def view_complaints(req):
+    if 'police' not in req.session:
+        return redirect(login)  # Ensure police is logged in
+
+    police = get_police(req)
+    complaints = Complaint.objects.filter(police=police).order_by('-created_at')
+    return render(req, 'police/view_complaints.html', {'complaints': complaints})
