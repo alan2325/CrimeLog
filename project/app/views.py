@@ -79,7 +79,7 @@ def user_reg(req):
 
 def userhome(req):
     if 'user' in req.session:
-        return redirect(userhome)
+        return render(req,'user/home.html')
     
 def policehome(req):
     if 'user' in req.session:
