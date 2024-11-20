@@ -85,3 +85,10 @@ def policehome(req):
     if 'user' in req.session:
         return redirect(policehome)
     
+def usersearch(request):
+    query = request.GET.get('query') 
+    products = []
+    if query:
+        products = User.objects.filter(name__icontains=query)
+        
+    return render(request, 'user/usersearch.html', {'products': products, 'query': query})
