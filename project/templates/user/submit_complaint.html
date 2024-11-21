@@ -274,10 +274,10 @@
             <label for="description">Description:</label>
             <textarea name="description" id="description" required></textarea>
             <br>
-            <label for="police">Select Police Officer:</label>
+            <label for="police">Select Police Station:</label>
             <select name="police" id="police" required>
-                <option value="" disabled selected>Select Officer</option>
-                {% for officer in police_station %}
+                <option value="" disabled selected>Select Station</option>
+                {% for officer in police_officers %}
                     <option value="{{ officer.id }}">{{ officer.name }}</option>
                 {% endfor %}
             </select>
