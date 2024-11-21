@@ -9,6 +9,7 @@
     <title>CrimeLog</title>
     <style>
 
+        /* navbar */
         #nav {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             background-color: #343a40;
@@ -16,17 +17,18 @@
         }
 
         .navbar-brand img {
-            max-height: 150px;
-
+            max-height: 60px;
         }
 
         .navbar .nav-link {
             color: #fff;
             transition: color 0.3s ease;
+            margin: 10px;
+
         }
 
         .navbar .nav-link:hover {
-            color: #4d73f1;
+            color: #91aafa;
         }
 
         .navbar-toggler {
@@ -40,6 +42,8 @@
         .search-bar {
             position: relative;
             width: 300px;
+            margin-bottom: -20px;
+            
         }
 
         .search-bar input {
@@ -50,7 +54,7 @@
 
         .search-bar .search-icon {
             position: absolute;
-            top: 50%;
+            top: 35%;
             left: 10px;
             transform: translateY(-50%);
             font-size: 1rem;
@@ -85,12 +89,115 @@
             color: #fff;
         }
 
-        @media only screen and (max-width: 768px) {
-        #mynavbar {
-          background-color: #2c2727;
+    
+        
+        /*  body */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            /* display: flex; */
+            justify-content: center; 
+            align-items: center;
+            height: 100vh;   
         }
- 
-    }  
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Card style */
+        .complaint-card {
+            background: #fff;
+            width: 100%;
+            max-width: 600px;
+            padding: 50px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-image: linear-gradient(to bottom, #fff, #f8f8f8);
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        /* Border fade effect on hover */
+        .complaint-card:hover {
+            border-color: #007bff;
+        }
+
+        /* Form styling */
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 150px;
+        }
+
+        #submitbtn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* responsive */
+
+        /* @media only screen and (max-width: 768px) {
+            #mynavbar {
+            background-color: #2c2727;
+            }
+        }   */
+
+        @media only screen and (max-width:  992px) {
+            #mynavbar {
+            background-color: #2c2727;
+
+            }
+            .search-bar{
+                margin-left: 20px;
+            }
+            #profileDropdown{
+                margin: 10px;
+            }
+            .search-bar .search-icon {
+            top: 50%;
+            }
+        }      
+
+        @media only screen and (min-width:  600px) {
+            .complaint-card {
+                margin-left: 15%;
+            }
+        }
+        @media only screen and (min-width:  992px) {
+            .complaint-card {
+                margin-left: 35%;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -98,7 +205,7 @@
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand" href="../userhome">
-                <img id="logo" src="../static/images/logo.png" alt="Logo">
+                <img id="logo" src="../static/images/logo.png" alt="CrimeLog">
             </a>
 
             <!-- Toggler for smaller screens -->
@@ -136,7 +243,7 @@
 
                 <!-- Profile Dropdown -->
                 <div class="dropdown ms-3">
-                    <button class="btn btn-link dropdown-toggle p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-link dropdown p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="../static/images/profile.png" alt="Profile" class="profile-img">
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
@@ -158,24 +265,27 @@
     </nav>
 
     <h2>Submit a Complaint</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="subject">Subject:</label>
-        <input type="text" name="subject" id="subject" required>
-        <br>
-        <label for="description">Description:</label>
-        <textarea name="description" id="description" required></textarea>
-        <br>
-        <label for="police">Select Police Officer:</label>
-        <select name="police" id="police" required>
-            <option value="" disabled selected>Select Officer</option>
-            {% for officer in police_officers %}
-                <option value="{{ officer.id }}">{{ officer.name }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <button type="submit">Submit Complaint</button>
-    </form>
+    <div class="complaint-card">
+        <form method="post">
+            {% csrf_token %}
+            <label for="subject">Subject:</label>
+            <input type="text" name="subject" id="subject" required>
+            <br>
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" required></textarea>
+            <br>
+            <label for="police">Select Police Officer:</label>
+            <select name="police" id="police" required>
+                <option value="" disabled selected>Select Officer</option>
+                {% for officer in police_station %}
+                    <option value="{{ officer.id }}">{{ officer.name }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit" id="submitbtn">Submit Complaint</button>
+        </form>
+    </div>
+    
     
 </body>
 </html>

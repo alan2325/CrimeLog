@@ -16,17 +16,17 @@
         }
 
         .navbar-brand img {
-            max-height: 150px;
-
+            max-height: 60px;
         }
 
         .navbar .nav-link {
             color: #fff;
             transition: color 0.3s ease;
+            margin: 10px;
         }
 
         .navbar .nav-link:hover {
-            color: #4d73f1;
+            color: #91aafa;
         }
 
         .navbar-toggler {
@@ -85,12 +85,26 @@
             color: #fff;
         }
 
-        @media only screen and (max-width: 768px) {
-        #mynavbar {
-          background-color: #2c2727;
-        }
- 
-    }  
+        /* responsive */
+
+        /* @media only screen and (max-width: 768px) {
+            #mynavbar {
+            background-color: #2c2727;
+            }
+        }   */
+
+        @media only screen and (max-width:  992px) {
+            #mynavbar {
+            background-color: #2c2727;
+
+            }
+            .search-bar{
+                margin-left: 20px;
+            }
+            #profileDropdown{
+                margin: 10px;
+            }
+        }  
     </style>
 </head>
 <body>
@@ -98,7 +112,7 @@
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand" href="../userhome">
-                <img id="logo" src="../static/images/logo.png" alt="Logo">
+                <img id="logo" src="../static/images/logo.png" alt="CrimeLog">
             </a>
 
             <!-- Toggler for smaller screens -->
@@ -136,7 +150,7 @@
 
                 <!-- Profile Dropdown -->
                 <div class="dropdown ms-3">
-                    <button class="btn btn-link dropdown-toggle p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-link dropdown p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="static/images/profile.png" alt="Profile" class="profile-img">
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
