@@ -85,13 +85,148 @@
             color: #fff;
         }
 
-        /* responsive */
 
-        /* @media only screen and (max-width: 768px) {
-            #mynavbar {
-            background-color: #2c2727;
+          /* ######################## profile upade ######################### */
+
+        .profile-container {
+            background-color: #fff;
+            width: 100%;
+            max-width: 600px;
+            margin-left: 5%;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin:  50px 0 50px 0;
+        }
+
+        .profile-image-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #343a40;
+            margin-bottom: 10px;
+        }
+
+        .upload-label {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            max-width: 180px;
+            margin: 10px auto;
+        }
+
+        #image-upload {
+            display: none;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-form label {
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+            padding-left: 20px;
+        }
+
+        .profile-form input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .profile-form input[type="password"] {
+            margin-bottom: 15px;
+        }
+
+        .edit-button {
+            padding: 12px 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-button:hover {
+            background-color: #0056b3;
+        }
+
+
+
+        /*################ Responsive ################*/
+        @media only screen and (min-width: 600px) {
+            .profile-container{
+                margin-left: 14%;
             }
-        }   */
+        } 
+        @media screen and (max-width: 600px) {
+            .profile-container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+            }
+
+            .edit-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .profile-form label,
+            .profile-form input {
+                max-width: 100%;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .profile-container {
+                padding: 15px;
+                width: 90%;
+            }
+            .profile-image {
+                width: 100px;
+                height: 100px;
+            }
+            .edit-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        } 
+
+          @media only screen and (min-width: 992px) {
+            .profile-container{
+                margin-left: 35%;
+            }
+        } 
 
         @media only screen and (max-width:  992px) {
             #mynavbar {
@@ -170,5 +305,66 @@
             </div>
         </div>
     </nav>
+
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <!-- Profile Image Upload Section -->
+    <div class="profile-image-container">
+        <img src="../static/images/profile.png" alt="Profile Image" class="profile-image" id="profile-img">
+        <label for="image-upload" class="upload-label">Change Profile Picture</label>
+        <input type="file" id="image-upload" name="profile-image" accept="image/*" />
+    </div>
+    
+    <!-- Profile Update Form -->
+    <form class="profile-form" action="/updateProfile" method="POST" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{data.username}}" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter a new password" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" value="{{data.phonenumber}}" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="{{data.location}}" required>
+
+        <!-- <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{data.email}}" required> -->
+
+        <button type="submit" class="edit-button">Save Changes</button>
+    </form>
+</div>
+
+<script>
+    const imageUpload = document.getElementById('image-upload');
+    const profileImage = document.getElementById('profile-img');
+
+    // Preview the selected image
+    imageUpload.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profileImage.src = e.target.result; // Show preview image
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+</body>
+</html>
+
 </body>
 </html>

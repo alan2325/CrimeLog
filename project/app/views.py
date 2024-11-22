@@ -153,3 +153,38 @@ def view_complaints(req):
     police = get_police(req)
     complaints = Complaint.objects.filter(police=police).order_by('-created_at')
     return render(req, 'police/view_complaints.html', {'complaints': complaints})
+
+
+######### user view profile
+
+def userprofile(req):
+    if 'user' in req.session:
+        return render(req,'user/user_profile.html',{'data':get_user(req)})
+    else:
+        return redirect(login)
+    
+
+###profile update
+def updateuserprofile(req):
+    if 'user' in req.session:
+        try:
+            data = User.objects.get(Email=req.session['user'])
+        except User.DoesNotExist:
+            return redirect(login)
+
+        if req.method == 'POST':
+            name = req.POST['username']
+            phonenumber = req.POST['phonenumber']
+            location = req.POST['location']
+            if not re.match(r'^[789]\d{9}$', phonenumber):
+                return render(req, 'user/update_user_profile.html', {
+                    'data': data,
+                    'error_message': 'Invalid phone number'
+                })
+            User.objects.filter(Email=req.session['user']).update(username=name, phonenumber=phonenumber, location=location)
+            return redirect(userprofile)
+        return render(req, 'user/update_user_profile.html', {'data': data})
+
+    else:
+
+        return redirect(login)
