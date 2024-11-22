@@ -150,10 +150,29 @@ def submit_complaint(req):
 
 def view_complaints(req):
     if 'police' not in req.session:
-        return redirect(login)  # Ensure police is logged in
+        return redirect(login)  # Ensure the police officer is logged in
 
-    police = get_police(req)
+    police = get_police(req)  # Helper function to fetch police officer details
     complaints = Complaint.objects.filter(police=police).order_by('-created_at')
+
+    if req.method == 'POST':
+        complaint_id = req.POST.get('complaint_id')
+        new_status = req.POST.get('status')
+
+        try:
+            complaint = Complaint.objects.get(id=complaint_id, police=police)
+            complaint.status = new_status
+            complaint.save()
+            success_message = "Complaint status updated successfully."
+        except Complaint.DoesNotExist:
+            error_message = "Complaint not found or unauthorized action."
+
+        return render(req, 'police/view_complaints.html', {
+            'complaints': complaints,
+            'success_message': success_message if 'success_message' in locals() else None,
+            'error_message': error_message if 'error_message' in locals() else None,
+        })
+
     return render(req, 'police/view_complaints.html', {'complaints': complaints})
 
 
