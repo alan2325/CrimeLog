@@ -6,8 +6,9 @@ class User(models.Model):
     username = models.TextField()
     phonenumber = models.IntegerField()
     password = models.TextField()
-    location= models.TextField()
-    idproof= models.FileField()
+    location = models.TextField()
+    idproof = models.FileField()
+    profile_picture = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.png')  # Ensure the default image is in the correct path.
 
     def __str__(self):
         return self.username

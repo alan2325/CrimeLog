@@ -326,7 +326,7 @@
     </div>
     
     <!-- Profile Update Form -->
-    <form class="profile-form" action="/updateProfile" method="POST" enctype="multipart/form-data">
+    {% comment %} <form class="profile-form" action="/updateProfile" method="POST" enctype="multipart/form-data">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="{{data.username}}" required>
 
@@ -342,8 +342,26 @@
         <!-- <label for="email">Email:</label>
         <input type="email" id="email" name="email" value="{{data.email}}" required> -->
 
+    </form> {% endcomment %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="{{ data.username }}" required><br><br>
+        
+        <label for="phonenumber">Phone Number:</label>
+        <input type="text" name="phonenumber" value="{{ data.phonenumber }}" required><br><br>
+        
+        <label for="location">Location:</label>
+        <input type="text" name="location" value="{{ data.location }}" required><br><br>
+    
+        <label for="profile_picture">Profile Picture:</label>
+        <input type="file" name="profile_picture">
+    
         <button type="submit" class="edit-button">Save Changes</button>
+
     </form>
+    
 </div>
 
 <script>

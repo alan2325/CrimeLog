@@ -4,6 +4,8 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 import re
+from django.core.files.storage import default_storage
+
 
 
 # Create your views here.
@@ -165,6 +167,7 @@ def userprofile(req):
     
 
 ###profile update
+
 def updateuserprofile(req):
     if 'user' in req.session:
         try:
@@ -176,15 +179,26 @@ def updateuserprofile(req):
             name = req.POST['username']
             phonenumber = req.POST['phonenumber']
             location = req.POST['location']
+            profile_picture = req.FILES.get('profile_picture')  # Handle the file upload
+
+            # Validate phone number
             if not re.match(r'^[789]\d{9}$', phonenumber):
                 return render(req, 'user/update_user_profile.html', {
                     'data': data,
                     'error_message': 'Invalid phone number'
                 })
-            User.objects.filter(Email=req.session['user']).update(username=name, phonenumber=phonenumber, location=location)
+
+            # Update user details
+            if profile_picture:  # Update only if a new file is uploaded
+                picture_path = default_storage.save(profile_picture.name, profile_picture)
+                data.profile_picture = picture_path
+            data.username = name
+            data.phonenumber = phonenumber
+            data.location = location
+            data.save()
             return redirect(userprofile)
+
         return render(req, 'user/update_user_profile.html', {'data': data})
 
     else:
-
         return redirect(login)
