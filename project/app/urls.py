@@ -19,5 +19,7 @@ path('userprofile',views.userprofile),
 path('police_reg',views.police_reg),
 path('policehome',views.policehome),
 path('view_complaints/', views.view_complaints, name='view_complaints'),
+path('viewuser',views.viewuser),
+
     
 ]

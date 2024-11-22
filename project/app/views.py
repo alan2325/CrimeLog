@@ -221,3 +221,8 @@ def updateuserprofile(req):
 
     else:
         return redirect(login)
+    
+
+def viewuser(req):
+    data=User.objects.all()
+    return render(req,'police/viewuser.html', {'data':data})
