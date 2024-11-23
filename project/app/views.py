@@ -8,12 +8,11 @@ from django.core.files.storage import default_storage
 
 
 
-# Create your views here.
+
 
 def get_user(req):
     data=User.objects.get(Email=req.session['user'])
     return data
-
 
 def get_police(req):
     data=Police.objects.get(Email=req.session['police'])
@@ -51,6 +50,9 @@ def logout(req):
     return redirect(login)
 
 
+
+#################  user  #######################
+
 def user_reg(req):
 
     if req.method=='POST':
@@ -78,44 +80,24 @@ def user_reg(req):
             messages.warning(req, "Email Already Exits , Try Another Email.")
     return render(req,'user/user_reg.html')
 
-
-def police_reg(req):
-    if req.method=='POST':
-        name=req.POST['name']
-        email=req.POST['Email']
-        password=req.POST['password']
-         # Validate email
-        try:
-            validate_email(email)
-        except ValidationError:
-            messages.warning(req, "Invalid email format, please enter a valid email.")
-            return render(req, 'police/police_reg.html')
-
-        # Validate phone number (assuming 10-digit numeric format)
-        try:
-            data=Police.objects.create(name=name,Email=email,password=password)
-            data.save()
-            return redirect(login)
-        except:
-            messages.warning(req, "Email Already Exits , Try Another Email.")
-    return render(req,'police/police_reg.html')
-
-
 def userhome(req):
     if 'user' in req.session:
         return render(req,'user/home.html')
+    else:
+        return redirect(login)
     
-def policehome(req):
-    if 'police' in req.session:
-        return render(req,'police/home.html')
-    
+
 def usersearch(request):
-    query = request.GET.get('query') 
-    products = []
-    if query:
-        products = User.objects.filter(name__icontains=query)
-        
-    return render(request, 'user/usersearch.html', {'products': products, 'query': query})
+    if 'user' in req.session:
+        query = request.GET.get('query') 
+        products = []
+        if query:
+            products = User.objects.filter(name__icontains=query)
+            
+        return render(request, 'user/usersearch.html', {'products': products, 'query': query})
+    else:
+        return redirect(login)
+    
 
 
 def submit_complaint(req):
@@ -147,35 +129,6 @@ def submit_complaint(req):
 
     return render(req, 'user/submit_complaint.html', {'police_officers': police_officers})
 
-
-def view_complaints(req):
-    if 'police' not in req.session:
-        return redirect(login)  # Ensure the police officer is logged in
-
-    police = get_police(req)  # Helper function to fetch police officer details
-    complaints = Complaint.objects.filter(police=police).order_by('-created_at')
-
-    if req.method == 'POST':
-        complaint_id = req.POST.get('complaint_id')
-        new_status = req.POST.get('status')
-
-        try:
-            complaint = Complaint.objects.get(id=complaint_id, police=police)
-            complaint.status = new_status
-            complaint.save()
-            success_message = "Complaint status updated successfully."
-        except Complaint.DoesNotExist:
-            error_message = "Complaint not found or unauthorized action."
-
-        return render(req, 'police/view_complaints.html', {
-            'complaints': complaints,
-            'success_message': success_message if 'success_message' in locals() else None,
-            'error_message': error_message if 'error_message' in locals() else None,
-        })
-
-    return render(req, 'police/view_complaints.html', {'complaints': complaints})
-
-
 ######### user view profile
 
 def userprofile(req):
@@ -185,7 +138,7 @@ def userprofile(req):
         return redirect(login)
     
 
-###profile update
+########## user profile update
 
 def updateuserprofile(req):
     if 'user' in req.session:
@@ -222,16 +175,103 @@ def updateuserprofile(req):
     else:
         return redirect(login)
     
+def userhistory(req):
+    if 'user' in req.session:
+        data=User.objects.all()
+        return render(req,'user/user_history.html',{'data':data})
+    else:
+        return redirect(login)
+
+def chat(req):
+    if 'user' in req.session:
+        data=User.objects.all()
+        return render(req,'user/chat.html',{'data':data})
+    else:
+        return redirect(login)
+
+
+
+
+################### police  ###############33
+
+def police_reg(req):
+    if req.method=='POST':
+        name=req.POST['name']
+        email=req.POST['Email']
+        password=req.POST['password']
+         # Validate email
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.warning(req, "Invalid email format, please enter a valid email.")
+            return render(req, 'police/police_reg.html')
+
+        # Validate phone number (assuming 10-digit numeric format)
+        try:
+            data=Police.objects.create(name=name,Email=email,password=password)
+            data.save()
+            return redirect(login)
+        except:
+            messages.warning(req, "Email Already Exits , Try Another Email.")
+    return render(req,'police/police_reg.html')
+    
+def policehome(req):
+    if 'police' in req.session:
+        return render(req,'police/home.html')
+    else:
+        return redirect(login)
+
+def view_complaints(req):
+    if 'police' not in req.session:
+        return redirect(login)  # Ensure the police officer is logged in
+
+    police = get_police(req)  # Helper function to fetch police officer details
+    complaints = Complaint.objects.filter(police=police).order_by('-created_at')
+
+    if req.method == 'POST':
+        complaint_id = req.POST.get('complaint_id')
+        new_status = req.POST.get('status')
+
+        try:
+            complaint = Complaint.objects.get(id=complaint_id, police=police)
+            complaint.status = new_status
+            complaint.save()
+            success_message = "Complaint status updated successfully."
+        except Complaint.DoesNotExist:
+            error_message = "Complaint not found or unauthorized action."
+
+        return render(req, 'police/view_complaints.html', {
+            'complaints': complaints,
+            'success_message': success_message if 'success_message' in locals() else None,
+            'error_message': error_message if 'error_message' in locals() else None,
+        })
+
+    return render(req, 'police/view_complaints.html', {'complaints': complaints})
 
 def viewuser(req):
-    data=User.objects.all()
-    return render(req,'viewuser.html', {'data':data})
+    if 'police' not in req.session:
+        data=User.objects.all()
+        return render(req,'police/viewuser.html', {'data':data})
+    else:
+        return redirect(login)
+
+def complainthistory(req):
+    if 'police' not in req.session:
+        data=User.objects.all()
+        return render(req,'police/complainthistory.html', {'data':data})
+    else:
+        return redirect(login)        
+
+
+
+##################  admin ###############
 
 def viewpolice(req):
     data=Police.objects.all()
     return render(req,'admin/viewpolice.html',{'data':data})
 
-
 def viewusers(req):
     data=User.objects.all()
     return render(req,'admin/viewusers.html',{'data':data})
+
+
