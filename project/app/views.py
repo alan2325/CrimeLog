@@ -225,4 +225,13 @@ def updateuserprofile(req):
 
 def viewuser(req):
     data=User.objects.all()
-    return render(req,'police/viewuser.html', {'data':data})
+    return render(req,'viewuser.html', {'data':data})
+
+def viewpolice(req):
+    data=Police.objects.all()
+    return render(req,'admin/viewpolice.html',{'data':data})
+
+
+def viewusers(req):
+    data=User.objects.all()
+    return render(req,'admin/viewusers.html',{'data':data})

@@ -21,5 +21,12 @@ path('policehome',views.policehome),
 path('view_complaints/', views.view_complaints, name='view_complaints'),
 path('viewuser',views.viewuser),
 
+
+#### Admin
+
+# path('adminhome',views.adminhome),
+path('viewpolice',views.viewpolice),
+path('viewusers',views.viewusers),
+
     
 ]
