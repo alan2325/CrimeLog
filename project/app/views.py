@@ -249,11 +249,11 @@ def view_complaints(req):
     return render(req, 'police/view_complaints.html', {'complaints': complaints})
 
 def viewuser(req):
-    if 'police' not in req.session:
+    # if 'police' not in req.session:
         data=User.objects.all()
         return render(req,'police/viewuser.html', {'data':data})
-    else:
-        return redirect(login)
+    # else:
+    #     return redirect(login)
 
 def complainthistory(req):
     if 'police' not in req.session:
