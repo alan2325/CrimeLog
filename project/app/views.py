@@ -175,12 +175,21 @@ def updateuserprofile(req):
     else:
         return redirect(login)
     
+# def userhistory(req):
+#     if 'user' in req.session:
+#         data=User.objects.all()
+#         return render(req,'user/user_history.html',{'data':data})
+#     else:
+#         return redirect(login)
+
 def userhistory(req):
     if 'user' in req.session:
-        data=User.objects.all()
-        return render(req,'user/user_history.html',{'data':data})
+        user = get_user(req)  # Get the currently logged-in user
+        complaints = Complaint.objects.filter(user=user).order_by('-created_at')  # Fetch complaints specific to this user
+        return render(req, 'user/user_history.html', {'complaints': complaints})
     else:
         return redirect(login)
+
 
 def chat(req):
     if 'user' in req.session:
