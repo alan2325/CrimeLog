@@ -196,10 +196,10 @@
                 <!-- Left links -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../view_complaints">View Complaint</a>
+                        <a class="nav-link" href="../view_complaints">New Complaint</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../complainthistory">View History</a>
+                        <a class="nav-link" href="../complainthistory">Registered Complaint</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../viewuser">View Users</a>
@@ -271,7 +271,7 @@
                                     <option value="Registered" {% if complaint.status == "Registered" %}selected{% endif %}>Registered</option>
                                     <option value="Resolved" {% if complaint.status == "Resolved" %}selected{% endif %}>Resolved</option>
                                 </select>
-                                {% comment %} <button type="submit">Update</button> {% endcomment %}
+                                <button type="submit">Update</button>
                                 <a href="../delete/{{data.pk}}" type="btn-btn-primary">Cancel</a>
                                 <a href="../viewuser" type="btn-btn-primary">View User</a>
                                 
