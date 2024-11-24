@@ -170,5 +170,45 @@
             </div>
         </div>
     </nav>
+
+    <h2>Chat with Police Officers</h2>
+    
+    <!-- List of police officers -->
+    <h3>Choose a Police Officer:</h3>
+    <ul>
+        {% for officer in police_officers %}
+            <li>
+                <a href="?police_id={{ officer.id }}">{{ officer.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if selected_police %}
+        <h3>Chat with {{ selected_police.name }}</h3>
+
+        <!-- Chat messages -->
+        <div>
+            <h4>Messages:</h4>
+            <ul>
+                {% for message in messages %}
+                    <li>
+                        <strong>{{ message.sender.username }}:</strong> {{ message.content }}
+                        <em>({{ message.timestamp }})</em>
+                    </li>
+                {% empty %}
+                    <li>No messages yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Send a new message -->
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="message_content" placeholder="Type your message here"></textarea>
+            <button type="submit">Send</button>
+        </form>
+    {% else %}
+        <p>Select a police officer to start chatting.</p>
+    {% endif %}
 </body>
 </html>

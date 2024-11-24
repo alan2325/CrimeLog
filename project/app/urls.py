@@ -13,7 +13,7 @@ path('submit_complaint/', views.submit_complaint, name='submit_complaint'),
 path('userprofile',views.userprofile),
 path('updateuserprofile',views.updateuserprofile),
 path('userhistory',views.userhistory),
-path('chat',views.chat),
+path('chat/', views.chat, name='chat'),
 
 
 

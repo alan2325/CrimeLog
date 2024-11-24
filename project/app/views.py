@@ -185,21 +185,46 @@ def updateuserprofile(req):
 def userhistory(req):
     if 'user' in req.session:
         user = get_user(req)  # Get the currently logged-in user
+        police_officers = Police.objects.all()
         complaints = Complaint.objects.filter(user=user).order_by('-created_at')  # Fetch complaints specific to this user
-        return render(req, 'user/user_history.html', {'complaints': complaints})
+        return render(req, 'user/user_history.html', {'complaints': complaints,'police_officers': police_officers})
     else:
         return redirect(login)
 
 
 def chat(req):
     if 'user' in req.session:
-        data=User.objects.all()
-        return render(req,'user/chat.html',{'data':data})
+        user = get_user(req)
+        police_officers = Police.objects.all()
+        selected_police = None
+        messages = []
+
+        if req.method == 'POST':
+            police_id = req.POST.get('police_id')
+            message_content = req.POST.get('message_content')
+
+            if police_id and message_content.strip():
+                police = Police.objects.get(id=police_id)
+                Message.objects.create(sender=user, receiver=police, content=message_content)
+
+                # Redirect to reload chat with the selected police officer
+                return redirect(f'?police_id={police.id}')
+        
+        # Handle GET request to show messages
+        if 'police_id' in req.GET:
+            police_id = req.GET['police_id']
+            selected_police = Police.objects.get(id=police_id)
+            messages = Message.objects.filter(
+                (Q(sender=user) & Q(receiver=selected_police)) | (Q(sender=selected_police) & Q(receiver=user))
+            ).order_by('timestamp')
+
+        return render(req, 'user/chat.html', {
+            'police_officers': police_officers,
+            'selected_police': selected_police,
+            'messages': messages,
+        })
     else:
-        return redirect(login)
-
-
-
+        return redirect('login')
 
 ################### police  ###############33
 
