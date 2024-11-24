@@ -271,7 +271,10 @@
                                     <option value="Registered" {% if complaint.status == "Registered" %}selected{% endif %}>Registered</option>
                                     <option value="Resolved" {% if complaint.status == "Resolved" %}selected{% endif %}>Resolved</option>
                                 </select>
-                                <button type="submit">Update</button>
+                                {% comment %} <button type="submit">Update</button> {% endcomment %}
+                                <a href="../delete/{{data.pk}}" type="btn-btn-primary">Cancel</a>
+                                <a href="../viewuser" type="btn-btn-primary">View User</a>
+                                
                             </form>
                         </td>
                     </tr>

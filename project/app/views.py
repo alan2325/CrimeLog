@@ -248,6 +248,11 @@ def view_complaints(req):
 
     return render(req, 'police/view_complaints.html', {'complaints': complaints})
 
+def delete(req,id):
+    data=Complaint.objects.get(pk=id)
+    data.delete()
+    return redirect(policehome) 
+
 def viewuser(req):
     # if 'police' not in req.session:
         data=User.objects.all()
