@@ -179,6 +179,7 @@
                 <th>Description</th>
                 <th>Status</th>
                 <th>Date Submitted</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -188,6 +189,7 @@
                 <td>{{ complaint.description }}</td>
                 <td>{{ complaint.status }}</td>
                 <td>{{ complaint.created_at }}</td>
+                <td><a href="../chat">Chat</a>
             </tr>
             {% empty %}
             <tr>
@@ -197,54 +199,6 @@
         </tbody>
     </table>
 
-    <!-- Chat Box Section -->
-    <div class="chat-box">
-        <h3>Chat with Police Officer</h3>
-        
-        <!-- Select Police Officer -->
-        <div class="mb-3">
-            <label for="policeSelect" class="form-label">Choose a Police Officer:</label>
-            <select class="form-select" id="policeSelect" onchange="loadMessages(this.value)">
-                <option selected>Select Officer</option>
-                {% for officer in police_officers %}
-                    <option value="{{ officer.id }}">{{ officer.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Messages Display -->
-        <div class="messages" id="messagesContainer">
-            {% if selected_police %}
-                {% for message in messages %}
-                    <div class="message">
-                        <span class="sender">{{ message.sender.username }}:</span>
-                        <span class="content">{{ message.content }}</span>
-                        <br>
-                        <span class="timestamp">{{ message.timestamp }}</span>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div>No messages yet.</div>
-            {% endif %}
-        </div>
-
-        <!-- Message Input Form -->
-        <form method="POST" action="{% url 'chat' %}" id="chatForm">
-            {% csrf_token %}
-            <input type="hidden" name="police_id" id="police_id">
-            <textarea class="chat-input" name="message_content" id="messageContent" placeholder="Type your message..." rows="3"></textarea>
-            <button type="submit" class="chat-submit">Send Message</button>
-        </form>
-    </div>
-
-    <script>
-        function loadMessages(policeId) {
-            // Set the selected police officer's ID
-            document.getElementById("police_id").value = policeId;
-            
-            // Optionally, reload messages dynamically via Ajax (if needed)
-            // You can add an Ajax call here to dynamically fetch and display the messages
-        }
-    </script>
+   
 </body>
 </html>

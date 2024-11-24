@@ -26,6 +26,8 @@ path('view_complaints/', views.view_complaints, name='view_complaints'),
 path('viewuser',views.viewuser),
 path("complainthistory/", views.registered_complaints, name="complainthistory"),
 path('delete/<int:id>',views.delete),
+path('chats/', views.chats, name='chats'),
+
 # path('deleteitem/<int:id>',views.deleteitem),
 
 

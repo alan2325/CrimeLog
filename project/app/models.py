@@ -14,6 +14,7 @@ class User(models.Model):
         return self.username
 
 class Police(models.Model):
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
     Email = models.EmailField(unique=True)
     name = models.TextField()
     # phonenumber = models.IntegerField()

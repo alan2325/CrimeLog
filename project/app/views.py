@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 import re
 from django.core.files.storage import default_storage
+from django.db.models import Q
+
 
 
 
@@ -185,17 +187,17 @@ def updateuserprofile(req):
 def userhistory(req):
     if 'user' in req.session:
         user = get_user(req)  # Get the currently logged-in user
-        police_officers = Police.objects.all()
         complaints = Complaint.objects.filter(user=user).order_by('-created_at')  # Fetch complaints specific to this user
-        return render(req, 'user/user_history.html', {'complaints': complaints,'police_officers': police_officers})
+        return render(req, 'user/user_history.html', {'complaints': complaints})
     else:
         return redirect(login)
 
 
+
 def chat(req):
     if 'user' in req.session:
-        user = get_user(req)
-        police_officers = Police.objects.all()
+        user = get_user(req)  # Get the logged-in user
+        police_officers = Police.objects.all()  # List all police officers
         selected_police = None
         messages = []
 
@@ -204,18 +206,22 @@ def chat(req):
             message_content = req.POST.get('message_content')
 
             if police_id and message_content.strip():
-                police = Police.objects.get(id=police_id)
-                Message.objects.create(sender=user, receiver=police, content=message_content)
+                police = Police.objects.get(id=police_id)  # Get the police officer object
+                # Assign the related user instance to the receiver
+                Message.objects.create(sender=user, receiver=police.user, content=message_content)
 
                 # Redirect to reload chat with the selected police officer
                 return redirect(f'?police_id={police.id}')
-        
-        # Handle GET request to show messages
+
+        # Handle GET request to show messages with a selected police officer
         if 'police_id' in req.GET:
             police_id = req.GET['police_id']
             selected_police = Police.objects.get(id=police_id)
+
+            # Fetch messages exchanged between the user and the selected police
             messages = Message.objects.filter(
-                (Q(sender=user) & Q(receiver=selected_police)) | (Q(sender=selected_police) & Q(receiver=user))
+                (Q(sender=user) & Q(receiver=selected_police.user)) |
+                (Q(sender=selected_police.user) & Q(receiver=user))
             ).order_by('timestamp')
 
         return render(req, 'user/chat.html', {
@@ -224,7 +230,9 @@ def chat(req):
             'messages': messages,
         })
     else:
-        return redirect('login')
+        return redirect(userhome)
+
+
 
 ################### police  ###############33
 
@@ -314,6 +322,44 @@ def registered_complaints(req):
         return redirect(login)
 
     return render(req, 'police/complaint_history.html', {'complaints': complaints})   
+
+def chats(req):
+    if 'user' in req.session:
+        user = get_user(req)  # Get the logged-in user
+        police_officers = Police.objects.all()  # List all police officers
+        selected_police = None
+        messages = []
+
+        if req.method == 'POST':
+            police_id = req.POST.get('police_id')
+            message_content = req.POST.get('message_content')
+
+            if police_id and message_content.strip():
+                police = Police.objects.get(id=police_id)  # Get the police officer object
+                # Assign the related user instance to the receiver
+                Message.objects.create(sender=user, receiver=police.user, content=message_content)
+
+                # Redirect to reload chat with the selected police officer
+                return redirect(f'?police_id={police.id}')
+
+        # Handle GET request to show messages with a selected police officer
+        if 'police_id' in req.GET:
+            police_id = req.GET['police_id']
+            selected_police = Police.objects.get(id=police_id)
+
+            # Fetch messages exchanged between the user and the selected police
+            messages = Message.objects.filter(
+                (Q(sender=user) & Q(receiver=selected_police.user)) |
+                (Q(sender=selected_police.user) & Q(receiver=user))
+            ).order_by('timestamp')
+
+        return render(req, 'police/chats.html', {
+            'police_officers': police_officers,
+            'selected_police': selected_police,
+            'messages': messages,
+        })
+    else:
+        return redirect(chats)
 
 
 
