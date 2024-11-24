@@ -158,5 +158,34 @@
             </div>
         </div>
     </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Registered Complaints</h1>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Date Filed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                <tr>
+                    <td>{{ complaint.id }}</td>
+                    <td>{{ complaint.description }}</td>
+                    <td>{{ complaint.status }}</td>
+                    <td>{{ complaint.date_filed|date:"M d, Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No complaints registered.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </body>
 </html>

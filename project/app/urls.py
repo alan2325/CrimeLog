@@ -24,7 +24,7 @@ path('police_reg',views.police_reg),
 path('policehome',views.policehome),
 path('view_complaints/', views.view_complaints, name='view_complaints'),
 path('viewuser',views.viewuser),
-path('complainthistory',views.complainthistory),
+path("complainthistory/", views.registered_complaints, name="complainthistory"),
 path('delete/<int:id>',views.delete),
 # path('deleteitem/<int:id>',views.deleteitem),
 

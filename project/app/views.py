@@ -87,14 +87,14 @@ def userhome(req):
         return redirect(login)
     
 
-def usersearch(request):
+def usersearch(req):
     if 'user' in req.session:
-        query = request.GET.get('query') 
+        query = req.GET.get('query') 
         products = []
         if query:
             products = User.objects.filter(name__icontains=query)
             
-        return render(request, 'user/usersearch.html', {'products': products, 'query': query})
+        return render(req, 'user/usersearch.html', {'products': products, 'query': query})
     else:
         return redirect(login)
     
@@ -260,12 +260,26 @@ def viewuser(req):
     # else:
     #     return redirect(login)
 
-def complainthistory(req):
-    if 'police' not in req.session:
-        data=User.objects.all()
-        return render(req,'police/complainthistory.html', {'data':data})
+# def registered_complaints(request):
+#     if request.user.is_staff:  # If the user is a police/admin
+#         complaints = Complaint.objects.all()
+#     else:  # If the user is a general user
+#         complaints = Complaint.objects.filter(user=request.user)
+
+#     return render(request, "complaint_history.html", {"complaints": complaints})    
+# 
+
+def registered_complaints(req):
+    if 'police' in req.session:
+        police = get_police(req)
+        complaints = Complaint.objects.filter(police=police)
+    elif 'user' in req.session:
+        user = get_user(req)
+        complaints = Complaint.objects.filter(user=user)
     else:
-        return redirect(login)        
+        return redirect(login)
+
+    return render(req, 'police/complaint_history.html', {'complaints': complaints})   
 
 
 
