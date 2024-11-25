@@ -14,7 +14,6 @@ class User(models.Model):
         return self.username
 
 class Police(models.Model):
-    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
     Email = models.EmailField(unique=True)
     name = models.TextField()
     # phonenumber = models.IntegerField()
@@ -40,11 +39,22 @@ class Complaint(models.Model):
         return f"Complaint by {self.user.username} - {self.subject}"
     
 class Message(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_messages")
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="received_messages")
+    complaint=models.ForeignKey(Complaint, on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"From {self.sender.username} to {self.receiver.username}"
+        return f"Message for Complaint {self.complaint.id} by {self.complaint.user.username}"
+
+
+
+class Chat(models.Model):
+    police=models.ForeignKey(Police, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.username

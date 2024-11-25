@@ -243,7 +243,7 @@
                     <td>{{ complaint.description }}</td>
                     <td>{{ complaint.status }}</td>
                     <td>{{ complaint.created_at }}</td>
-                    <td><a id="btn" href="../chat">Chat</a></td>
+                    <td><a id="btn" href="../chat/{{complaint.pk}}">Chat</a></td>
                 </tr>
                 {% empty %}
                 <tr>

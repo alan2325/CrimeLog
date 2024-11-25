@@ -13,7 +13,7 @@ path('submit_complaint/', views.submit_complaint, name='submit_complaint'),
 path('userprofile',views.userprofile),
 path('updateuserprofile',views.updateuserprofile),
 path('userhistory',views.userhistory),
-path('chat/', views.chat, name='chat'),
+path('chat/<int:id>', views.chat, name='chat'),
 
 
 
@@ -26,7 +26,7 @@ path('view_complaints/', views.view_complaints, name='view_complaints'),
 path('viewuser',views.viewuser),
 path("complainthistory/", views.registered_complaints, name="complainthistory"),
 path('delete/<int:id>',views.delete),
-path('chats/', views.chats, name='chats'),
+path('chats/<int:id>', views.chats, name='chats'),
 
 # path('deleteitem/<int:id>',views.deleteitem),
 

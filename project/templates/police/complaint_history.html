@@ -177,7 +177,7 @@
                     <td>{{ complaint.id }}</td>
                     <td>{{ complaint.description }}</td>
                     <td>{{ complaint.status }}</td>
-                    <td><a href="../chats">Chat</a>
+                    <td><a href="../chats/{{complaint.pk}}">Chat</a>
                     {% comment %} <td>{{ complaint.date_filed|date:"M d, Y H:i" }}</td> {% endcomment %}
                 </tr>
                 {% empty %}

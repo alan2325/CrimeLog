@@ -192,46 +192,14 @@ def userhistory(req):
     else:
         return redirect(login)
 
-
-
-def chat(req):
-    if 'user' in req.session:
-        user = get_user(req)  # Get the logged-in user
-        police_officers = Police.objects.all()  # List all police officers
-        selected_police = None
-        messages = []
-
-        if req.method == 'POST':
-            police_id = req.POST.get('police_id')
-            message_content = req.POST.get('message_content')
-
-            if police_id and message_content.strip():
-                police = Police.objects.get(id=police_id)  # Get the police officer object
-                # Assign the related user instance to the receiver
-                Message.objects.create(sender=user, receiver=police.user, content=message_content)
-
-                # Redirect to reload chat with the selected police officer
-                return redirect(f'?police_id={police.id}')
-
-        # Handle GET request to show messages with a selected police officer
-        if 'police_id' in req.GET:
-            police_id = req.GET['police_id']
-            selected_police = Police.objects.get(id=police_id)
-
-            # Fetch messages exchanged between the user and the selected police
-            messages = Message.objects.filter(
-                (Q(sender=user) & Q(receiver=selected_police.user)) |
-                (Q(sender=selected_police.user) & Q(receiver=user))
-            ).order_by('timestamp')
-
-        return render(req, 'user/chat.html', {
-            'police_officers': police_officers,
-            'selected_police': selected_police,
-            'messages': messages,
-        })
+def chat(req,id):
+    if req.method=='POST':
+        complaint=Complaint.objects.get(pk=id)
+        msg=req.POST.get('content')
+        data=Message.objects.create(complaint=complaint,content=msg)
+        data.save()
     else:
-        return redirect(userhome)
-
+        return render(req,'user/chat.html')
 
 
 ################### police  ###############33
@@ -323,44 +291,16 @@ def registered_complaints(req):
 
     return render(req, 'police/complaint_history.html', {'complaints': complaints})   
 
-def chats(req):
-    if 'user' in req.session:
-        user = get_user(req)  # Get the logged-in user
-        police_officers = Police.objects.all()  # List all police officers
-        selected_police = None
-        messages = []
 
-        if req.method == 'POST':
-            police_id = req.POST.get('police_id')
-            message_content = req.POST.get('message_content')
 
-            if police_id and message_content.strip():
-                police = Police.objects.get(id=police_id)  # Get the police officer object
-                # Assign the related user instance to the receiver
-                Message.objects.create(sender=user, receiver=police.user, content=message_content)
-
-                # Redirect to reload chat with the selected police officer
-                return redirect(f'?police_id={police.id}')
-
-        # Handle GET request to show messages with a selected police officer
-        if 'police_id' in req.GET:
-            police_id = req.GET['police_id']
-            selected_police = Police.objects.get(id=police_id)
-
-            # Fetch messages exchanged between the user and the selected police
-            messages = Message.objects.filter(
-                (Q(sender=user) & Q(receiver=selected_police.user)) |
-                (Q(sender=selected_police.user) & Q(receiver=user))
-            ).order_by('timestamp')
-
-        return render(req, 'police/chats.html', {
-            'police_officers': police_officers,
-            'selected_police': selected_police,
-            'messages': messages,
-        })
+def chats(req,id):
+    if req.method=='POST':
+        complaint=Complaint.objects.get(pk=id)
+        msg=req.POST.get('content')
+        data=Message.objects.create(complaint=complaint,content=msg)
+        data.save()
     else:
-        return redirect(chats)
-
+        return render(req,'police/chats.html')
 
 
 ##################  admin ###############
