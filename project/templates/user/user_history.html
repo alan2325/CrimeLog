@@ -85,6 +85,58 @@
             color: #fff;
         }
 
+        /* ########### card class ############ */
+
+        #h2{
+            text-align: center;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 50px;
+            background-color: #fff;
+        }
+
+        /* Table styling */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .table th, .table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f4f4f4;
+        }
+
+        /*####### Button styling ############*/
+
+        #btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3b38f8; /* Green background */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #btn:hover {
+            background-color: #7876f0; /* Darker green on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+
         /* responsive */
 
         /* @media only screen and (max-width: 768px) {
@@ -171,33 +223,37 @@
         </div>
     </nav>
 
-    <h2>Your Complaint History</h2>
-    <table border="1" class="table">
-        <thead>
-            <tr>
-                <th>Subject</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Date Submitted</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for complaint in complaints %}
-            <tr>
-                <td>{{ complaint.subject }}</td>
-                <td>{{ complaint.description }}</td>
-                <td>{{ complaint.status }}</td>
-                <td>{{ complaint.created_at }}</td>
-                <td><a href="../chat">Chat</a>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No complaints found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h2 id="h2">Your Complaint History</h2>
+
+    <div class="card">
+        <table border="1" class="table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Date Submitted</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                <tr>
+                    <td>{{ complaint.subject }}</td>
+                    <td>{{ complaint.description }}</td>
+                    <td>{{ complaint.status }}</td>
+                    <td>{{ complaint.created_at }}</td>
+                    <td><a id="btn" href="../chat">Chat</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No complaints found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 
    
 </body>
