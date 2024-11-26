@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 import re
 from django.core.files.storage import default_storage
-from django.db.models import Q
+# from django.db.models import Q
 
 
 
@@ -195,9 +195,13 @@ def userhistory(req):
 def chat(req,id):
     if req.method=='POST':
         complaint=Complaint.objects.get(pk=id)
+    
         msg=req.POST.get('content')
+        # print(msg)
         data=Message.objects.create(complaint=complaint,content=msg)
         data.save()
+        return render(req,'user/chat.html')
+
     else:
         return render(req,'user/chat.html')
 
