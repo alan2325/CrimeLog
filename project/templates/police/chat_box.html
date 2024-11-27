@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ police.name }}</title>
+    {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+    <style>
+    .chat-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+    .messages {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+    .sent {
+        text-align: right;
+        background-color: #d1e7dd;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 10px;
+    }
+    .received {
+        text-align: left;
+        background-color: #f8d7da;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 10px;
+    }
+</style>    
+</head>
+<body>
+    <h1>Chat with {{ police.name }}</h1>
+    <div class="chat-container">
+        <div class="messages">
+            {% for chat in chats %}
+                <div class="{% if chat.user == request.user %}sent{% else %}received{% endif %}">
+                    <p>{{ chat.content }}</p>
+                    <small>{{ chat.timestamp|date:"d M Y, H:i" }}</small>
+                </div>
+            {% endfor %}
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="content" class="form-control" placeholder="Type your message here..." required>
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+</body>
+</html>

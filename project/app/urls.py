@@ -30,7 +30,8 @@ path('chats/<int:id>', views.chats, name='chats'),
 
 # path('deleteitem/<int:id>',views.deleteitem),
 
-
+ path('userchat/', views.userchat_box, name='chat_box'),  # For user
+path('policechat/', views.police_chat_box, name='police_chat_box'), 
 
 
 

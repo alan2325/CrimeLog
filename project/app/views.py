@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 import re
 from django.core.files.storage import default_storage
+# from django.contrib.auth.decorators import login_required
 # from django.db.models import Q
 
 
@@ -318,3 +319,50 @@ def viewusers(req):
     return render(req,'admin/viewusers.html',{'data':data})
 
 
+
+
+# @login_required
+def userchat_box(request):
+    """Handles chat between user and police"""
+    # police = Police.objects.get(id=police_id)
+    # chats = Chat.objects.filter(police=police, user=request.user).order_by('timestamp')
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content.strip():  # Basic validation to ensure content is not empty
+            Chat.objects.create(
+                # police=police,
+                user=request.user,
+                content=content
+            )
+        return redirect(userchat_box)
+
+    return render(request, 'user/chat_box.html', {
+        'chats': chats,
+        # 'police': police,
+        'is_police': False,
+    })
+
+
+# @login_required
+def police_chat_box(request):
+    """Handles chat from the police perspective"""
+    # user = User.objects.get(id=user_id)
+    # police = Police.objects.get(user=request.user)  # Assuming Police is linked to User
+    # chats = Chat.objects.filter(police=police).order_by('timestamp')
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content.strip():  # Basic validation to ensure content is not empty
+            Chat.objects.create(
+                # police=police,
+                # user=user,
+                content=content
+            )
+        return redirect('police_chat_box')
+
+    return render(request, 'police/chat_box.html', {
+        'chats': chats,
+        # 'police': police,
+        'is_police': True,
+    })
