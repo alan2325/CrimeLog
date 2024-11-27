@@ -298,14 +298,18 @@ def registered_complaints(req):
 
 
 
-def chats(req,id):
-    if req.method=='POST':
-        complaint=Complaint.objects.get(pk=id)
-        msg=req.POST.get('content')
-        data=Message.objects.create(complaint=complaint,content=msg)
-        data.save()
-    else:
-        return render(req,'police/chats.html')
+def chats(req, id):
+    complaint = Complaint.objects.get(pk=id)
+    data1 = Message.objects.filter(complaint=complaint)
+    
+    if req.method == 'POST':
+        msg = req.POST.get('content')
+        if msg:
+            data = Message.objects.create(complaint=complaint, content=msg)
+            data.save()
+    
+    return render(req, 'police/chats.html', {'data1': data1})
+
 
 
 ##################  admin ###############

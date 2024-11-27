@@ -159,30 +159,33 @@
         </div>
     </nav>
     <h2>Chat with User</h2>
-    
-    <form method="POST">
+    <form method="POST" class="my-3">
         {% csrf_token %}
-        <select name="police_id">
-            {% for police in police_officers %}
-                <option value="{{ police.id }}" {% if selected_police and police.id == selected_police.id %}selected{% endif %}>
-                    {{ police.name }}
-                </option>
-            {% endfor %}
-        </select>
-        <textarea name="content" placeholder="Type your message"></textarea>
-        <button type="submit">Send</button>
+        {% comment %} <div class="mb-3">
+            <label for="policeSelect" class="form-label">Select Officer:</label>
+            <select id="policeSelect" name="police_id" class="form-select">
+                {% for police in police_officers %}
+                    <option value="{{ police.id }}" {% if selected_police and police.id == selected_police.id %}selected{% endif %}>
+                        {{ police.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div> {% endcomment %}
+        <div class="mb-3">
+            <textarea name="content" class="form-control" rows="3" placeholder="Type your message..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
     </form>
     
-    {% comment %} <h2>Chat with</h2> {% endcomment %}
-    <div class="chat-box">
-        {% for message in messages %}
-            <div class="{% if message.sender == user %}user-message{% else %}police-message{% endif %}">
-                <p>{{ message.content }}</p>
-                <small>{{ message.timestamp }}</small>
+    <div class="mt-4">
+        <h3>User Messages</h3>
+        {% for i in data1 %}
+            <div class="border p-2 mb-2 rounded">
+                <p><strong>Message:</strong> {{ i.content }}</p>
+                <p><small><strong>Time:</strong> {{ i.timestamp }}</small></p>
             </div>
         {% endfor %}
-    </div>
-    
+    </div>   
 
 </body>
 </html>
