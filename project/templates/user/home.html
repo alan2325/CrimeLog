@@ -90,35 +90,43 @@
             text-align: center;
         }
 
-
+        .complaint-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows cards to wrap in rows */
+            gap: 1rem; /* Space between cards */
+            justify-content: center; /* Center-align cards */
+            max-width: 800px; /* Medium-width container */
+            margin: 0 auto; /* Center container on the page */
+        }
+        
         .card {
+            width: 250px; /* Make each card square by equal width and height */
+            height: 250px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 20px 50px;
-            background-color: #fff;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space out header and body */
+            padding: 1rem;
+            text-align: center; /* Center-align text inside the card */
         }
-
-        /* Table styling */
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 10px 0;
-            font-family: Arial, sans-serif;
+        
+        .card-header h3 {
+            font-size: 1.1rem;
+            margin: 0;
+            text-overflow: ellipsis; /* Prevent long text overflow */
+            overflow: hidden;
+            white-space: nowrap;
         }
-
-        .table th, .table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        
+        .card-body p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            word-wrap: break-word; /* Wrap long words */
         }
-
-        .table th {
-            background-color: #f4f4f4;
-        }
-
-
+        
         /* responsive */
 
         /* @media only screen and (max-width: 768px) {
@@ -211,33 +219,27 @@
 
     <h2 id="h2">Your Complaint History</h2>
 
-    <div class="card">
-        <table border="1" class="table">
-            <thead>
-                <tr>
-                    <th>Subject</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Date Submitted</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in complaint %}
-                <tr>
-                    <td>{{ i.subject }}</td>
-                    <td>{{ i.description }}</td>
-                    <td>{{ i.status }}</td>
-                    <td>{{ i.created_at }}</td>
-                    
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5">No complaints found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="complaint-container">
+        {% for i in complaint %}
+        <div class="card">
+            <div class="card-header">
+                <h3>{{ i.subject }}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Description:</strong> {{ i.description }}</p>
+                <p><strong>Status:</strong> {{ i.status }}</p>
+                <p><strong>Date Submitted:</strong> {{ i.created_at }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card">
+            <div class="card-body">
+                <p>No complaints found.</p>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-
+    
+    
 </body>
 </html>
