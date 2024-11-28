@@ -58,6 +58,8 @@
 
         }
 
+        
+
         /* Profile dropdown styles */
         .profile-img {
             width: 40px;
@@ -84,6 +86,8 @@
             background-color: #4d73f1;
             color: #fff;
         }
+
+       
 
         /* responsive */
 
@@ -130,9 +134,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../viewusers">View Users</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../viewcomplaint">Complaints</a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="../logout">Logout</a>
                     </li>
@@ -170,5 +172,39 @@
             </div>
         </div>
     </nav>
+
+    <h2 id="h2"> Complaints</h2>
+
+    <div class="card">
+        <table border="1" class="table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Date Submitted</th>
+                    {% comment %} <th>Action</th> {% endcomment %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{ i.subject }}</td>
+                    <td>{{ i.description }}</td>
+                    <td>{{ i.status }}</td>
+                    <td>{{ i.created_at }}</td>
+                    {% comment %} <td><a id="btn" href="../chat/{{i.pk}}">Chat</a></td> {% endcomment %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No complaints found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+
+
 </body>
 </html>

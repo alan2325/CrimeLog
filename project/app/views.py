@@ -316,6 +316,10 @@ def chats(req, id):
 
 ##################  admin ###############
 
+
+def adminhome(req):
+    return render(req,'admin/adminhome.html')
+
 def viewpolice(req):
     data=Police.objects.all()
     return render(req,'admin/viewpolice.html',{'data':data})
@@ -324,6 +328,9 @@ def viewusers(req):
     data=User.objects.all()
     return render(req,'admin/viewusers.html',{'data':data})
 
+def  viewcomplaint(req):
+    data=Complaint.objects.all()
+    return render(req,'admin/viewcomplaint.html',{'data':data})
 
 
 
