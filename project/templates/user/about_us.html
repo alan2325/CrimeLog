@@ -181,7 +181,7 @@
                         <a class="nav-link" href="../userchat">Ask Anything</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../aboutus">About Us</a>
+                        <a class="nav-link" href="../aboutus">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../logout">Logout</a>
@@ -234,6 +234,16 @@
             <!-- Google Map -->
             <div id="map"></div>
         </div>
+
+        <div>
+            <h3> Contact <h3>
+            {% for i in data %}
+            <div>
+                <strong>Station :</strong>{{i.name}}<br>
+                <strong>Email :</strong>{{i.Email}}
+            </div>
+            {% endfor %}
+
     
         <!-- Footer -->
         <div id="footer">

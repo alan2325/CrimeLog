@@ -212,7 +212,8 @@ def chat(req,id):
     
 def aboutus(req):
     if 'user' in req.session:
-        return render(req, 'user/about_us.html')
+        data=Police.objects.all()
+        return render(req, 'user/about_us.html',{'data':data})
     else:
         return redirect(login)
 
@@ -345,7 +346,7 @@ def addstation(req):
         name = req.POST['name']
         Email = req.POST['Email']
         password = req.POST['password']
-        data=Police.objects.create(name=name,Email=Email,password=password,police=get_police(req))
+        data=Police.objects.create(name=name,Email=Email,password=password)
         data.save()
         return redirect(viewpolice)
     return render(req,'admin/addstation.html')
