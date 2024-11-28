@@ -41,6 +41,8 @@ path('adminhome',views.adminhome),
 path('viewpolice',views.viewpolice),
 path('viewusers',views.viewusers),
 path('viewcomplaint',views.viewcomplaint),
+path('addstation',views.addstation),
+
 
 
     

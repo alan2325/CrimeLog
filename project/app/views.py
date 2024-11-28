@@ -332,6 +332,16 @@ def  viewcomplaint(req):
     data=Complaint.objects.all()
     return render(req,'admin/viewcomplaint.html',{'data':data})
 
+def addstation(req):
+    if req.method=='POST':
+        name = req.POST['name']
+        Email = req.POST['Email']
+        password = req.POST['password']
+        data=Police.objects.create(name=name,Email=Email,password=password,police=get_police(req))
+        data.save()
+        return redirect(viewpolice)
+    return render(req,'admin/addstation.html')
+
 
 
 # @login_required
