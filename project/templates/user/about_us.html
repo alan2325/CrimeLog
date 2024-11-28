@@ -5,16 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <title>CrimeLog - Chat</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>CrimeLog</title>
     <style>
-        /* General styles */
-        /* body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        } */
 
         #nav {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -93,100 +88,56 @@
         }
 
 
-        #h2{
-            text-align: center;
-        }
+        /* ########################## map ##################### */
+        
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-        #chat-container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 100px);
-            padding: 50px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        #chat-box {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            background-color: #f0f2f5;
-        }
-
-        .message {
-            max-width: 70%;
-            margin: 10px 0;
-            padding: 10px 15px;
+        #map-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             border-radius: 15px;
-            position: relative;
-        }
-
-        .message .timestamp {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        .message.user-message {
-            background-color: #d1e7dd;
-            margin-left: auto;
-            text-align: left;
-        }
-
-        .message.reply-message {
-            background-color: #e9ecef;
-            margin-right: auto;
-            text-align: left;
-        }
-
-        #message-input {
-            display: flex;
-            padding: 10px;
+            overflow: hidden;
             background-color: #fff;
-            border-top: 1px solid #dee2e6;
         }
 
-        #message-input textarea {
-            flex: 1;
-            resize: none;
-            border-radius: 20px;
-            border: 1px solid #ced4da;
-            padding: 10px 15px;
-            margin-right: 10px;
-            outline: none;
-        }
-
-        #message-input button {
-            background-color: #0d6efd;
-            border: none;
+        /* Header Styling */
+        #map-header {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #007bff, #4d73f1);
             color: white;
-            padding: 0 20px;
-            border-radius: 20px;
-            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
-        #message-input button:hover {
-            background-color: #0056b3;
+        /* Map Container Styling */
+        #map {
+            width: 100%;
+            height: 600px;
+        }
+
+        /* Footer */
+        #footer {
+            text-align: center;
+            margin: 20px 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+
+
+        /* ################################## responsive ########################### */
+
+        @media only screen and (max-width: 768px) {
+            #map {
+                height: 400px;
+            }
+
+            #map-header {
+                font-size: 1.2rem;
+            }
         }
 
         @media only screen and (max-width:  992px) {
@@ -204,7 +155,6 @@
     </style>
 </head>
 <body>
-
     <nav id="nav" class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
             <!-- Logo -->
@@ -251,7 +201,7 @@
                 <!-- Profile Dropdown -->
                 <div class="dropdown ms-3">
                     <button class="btn btn-link dropdown p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="../static/images/profile.png" alt="Profile" class="profile-img">
+                        <img src="static/images/profile.png" alt="Profile" class="profile-img">
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li class="text-center">
@@ -273,31 +223,70 @@
 
 
 
-    <h2 id="h2">Your Complaint History</h2>
-
-
-
+    
+        <!-- Map Container -->
+        <div id="map-container">
+            <!-- Header -->
+            <div id="map-header">
+                Police Stations in Kerala
+            </div>
+    
+            <!-- Google Map -->
+            <div id="map"></div>
+        </div>
+    
+        <!-- Footer -->
+        <div id="footer">
+            &copy; 2024 CrimeLog | Designed for Kerala Police Mapping
+        </div>
+    
+        <script>
+            function initMap() {
+                // Center the map on Kerala, India
+                const keralaCenter = { lat: 10.8505, lng: 76.2711 };
+    
+                // Initialize the map
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 7,
+                    center: keralaCenter,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    fullscreenControl: true,
+                });
+    
+                // Example list of police stations in Kerala (replace or fetch real data from an API)
+                const policeStations = [
+                    { name: "Thiruvananthapuram Police Station", location: { lat: 8.5241, lng: 76.9366 } },
+                    { name: "Kochi Police Station", location: { lat: 9.9312, lng: 76.2673 } },
+                    { name: "Kozhikode Police Station", location: { lat: 11.2588, lng: 75.7804 } },
+                    { name: "Thrissur Police Station", location: { lat: 10.5276, lng: 76.2144 } },
+                    { name: "Kannur Police Station", location: { lat: 11.8745, lng: 75.3704 } },
+                ];
+    
+                // Add markers for each police station
+                policeStations.forEach(station => {
+                    const marker = new google.maps.Marker({
+                        position: station.location,
+                        map: map,
+                        title: station.name,
+                    });
+    
+                    // Add an info window for each marker
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `<strong>${station.name}</strong>`,
+                    });
+    
+                    // Show info window on marker click
+                    marker.addListener("click", () => {
+                        infoWindow.open(map, marker);
+                    });
+                });
+            }
+    
+            // Initialize the map after the page loads
+            window.onload = initMap;
+        </script>
 
     
-
-    <!-- Chat Container -->
-    <div id="chat-container">
-        <!-- Chat Box -->
-        <div id="chat-box">
-            {% for message in data1 %}
-                <div class="message {% if message.sender == user %}user-message{% else %}reply-message{% endif %}">
-                    <p>{{ message.content }}</p>
-                    <div class="timestamp">{{ message.timestamp }}</div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- Message Input -->
-        <form id="message-input" method="POST">
-            {% csrf_token %}
-            <textarea name="content" rows="1" placeholder="Type your message..."></textarea>
-            <button type="submit">Send</button>
-        </form>
-    </div>
 </body>
 </html>

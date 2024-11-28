@@ -196,17 +196,25 @@ def userhistory(req):
         return redirect(login)
 
 def chat(req,id):
-    complaint=Complaint.objects.get(pk=id)
-    data1 = Message.objects.filter(complaint=complaint)
+    if 'user' in req.session:
+        complaint=Complaint.objects.get(pk=id)
+        data1 = Message.objects.filter(complaint=complaint)
 
-    if req.method=='POST':
-        msg=req.POST.get('content')
-        if msg:
-            data=Message.objects.create(complaint=complaint,content=msg)
-            data.save()
-    return render(req,'user/chat.html',{'data1':data1})
+        if req.method=='POST':
+            msg=req.POST.get('content')
+            if msg:
+                data=Message.objects.create(complaint=complaint,content=msg)
+                data.save()
+        return render(req,'user/chat.html',{'data1':data1})
+    else:
+        return redirect(login) 
 
     
+def aboutus(req):
+    if 'user' in req.session:
+        return render(req, 'user/about_us.html')
+    else:
+        return redirect(login)
 
 
 ################### police  ###############33
