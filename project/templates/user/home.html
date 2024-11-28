@@ -170,5 +170,16 @@
             </div>
         </div>
     </nav>
+
+    <div>
+        {% for i in complaint %}
+        <div>
+            <strong>Subject:</strong>{{i.subject}}<br>
+            <strong>Description:</strong>{{i.description}}<br>
+            <strong>Status:</strong>{{i.status}}<br>
+        </div>
+        {% endfor %}
+    <div>
+
 </body>
 </html>

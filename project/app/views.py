@@ -85,7 +85,9 @@ def user_reg(req):
 
 def userhome(req):
     if 'user' in req.session:
-        return render(req,'user/home.html')
+        user = get_user(req)
+        complaint = Complaint.objects.filter(user=user).order_by('-created_at') 
+        return render(req,'user/home.html',{'complaint':complaint})
     else:
         return redirect(login)
     
