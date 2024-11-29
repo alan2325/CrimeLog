@@ -14,7 +14,7 @@ path('userprofile',views.userprofile),
 path('updateuserprofile',views.updateuserprofile),
 path('userhistory',views.userhistory),
 path('chat/<int:id>', views.chat, name='chat'),
-path('aboutus',views.aboutus),
+path('contactus',views.contactus),
 
 
 

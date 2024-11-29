@@ -210,15 +210,15 @@ def chat(req,id):
         return redirect(login) 
 
     
-def aboutus(req):
+def contactus(req):
     if 'user' in req.session:
         data=Police.objects.all()
-        return render(req, 'user/about_us.html',{'data':data})
+        return render(req, 'user/contact_us.html',{'data':data})
     else:
         return redirect(login)
 
 
-################### police  ###############33
+################### police  ###############
 
 def police_reg(req):
     if req.method=='POST':
