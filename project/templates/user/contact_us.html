@@ -221,9 +221,27 @@
         </div>
     </nav>
 
+    <h3>Contact</h3>
+<div class="container my-4">
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Station Name</th>
+                <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>{{ i.Email }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+   
 
-
-    
         <!-- Map Container -->
         <div id="map-container">
             <!-- Header -->
@@ -235,15 +253,14 @@
             <div id="map"></div>
         </div>
 
-        <div>
-            <h3> Contact <h3>
+        {% comment %} <div>
             {% for i in data %}
             <div>
                 <strong>Station :</strong>{{i.name}}<br>
                 <strong>Email :</strong>{{i.Email}}
             </div>
             {% endfor %}
-        </div>
+        </div> {% endcomment %}
     
         <!-- Footer -->
         <div id="footer">
