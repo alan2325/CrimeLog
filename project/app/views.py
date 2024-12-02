@@ -41,7 +41,7 @@ def login(req):
             try:
                 police = Police.objects.get(Email=email, password=password)
                 req.session['police'] = police.Email
-                return redirect(policehome)
+                return redirect(view_complaints)
             except Police.DoesNotExist:
                 messages.warning(req, "Invalid email or password")
     return render(req, 'login.html')
