@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User,auth
+from .models import User
 from django.contrib import messages
 import re
 from django.core.files.storage import default_storage
@@ -30,23 +30,22 @@ def login(req):
     if 'police' in req.session:
         return redirect(policehome)
     
-
-    if req.method=='POST':
-        Email=req.POST['Email']
-        password=req.POST['password']
+    if req.method == 'POST':
+        email = req.POST['Email']  # Lowercase as per the custom model
+        password = req.POST['password']
         try:
-            data=User.objects.get(Email=Email,password=password)
-            req.session['user']=data.Email
+            user = User.objects.get(Email=email, password=password)  # Use custom model field names
+            req.session['user'] = user.Email
             return redirect(userhome)
         except User.DoesNotExist:
-            data=Police.objects.get(Email=Email,password=password)
-            req.session['police']=data.Email
+            try:
+                police = Police.objects.get(Email=email, password=password)
+                req.session['police'] = police.Email
+                return redirect(policehome)
+            except Police.DoesNotExist:
+                messages.warning(req, "Invalid email or password")
+    return render(req, 'login.html')
 
-            return redirect(policehome)
-    else:
-        messages.warning(req, "INVALID INPUT !")
-    return render(req,'login.html')
-    
 
 def logout(req):
     if 'user' in req.session:
