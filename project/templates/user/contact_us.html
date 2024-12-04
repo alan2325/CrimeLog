@@ -250,7 +250,8 @@
             </div>
     
             <!-- Google Map -->
-            <div id="map"></div>
+            <div id="map" style="width: 100%; height: 600px;"></div>
+
         </div>
 
         {% comment %} <div>
@@ -266,54 +267,95 @@
         <div id="footer">
             &copy; 2024 CrimeLog | Designed for Kerala Police Mapping
         </div>
-    
         <script>
+            let map; // Declare map as a global variable
+        
             function initMap() {
                 // Center the map on Kerala, India
                 const keralaCenter = { lat: 10.8505, lng: 76.2711 };
-    
+        
                 // Initialize the map
-                const map = new google.maps.Map(document.getElementById("map"), {
+                map = new google.maps.Map(document.getElementById("map"), {
                     zoom: 7,
                     center: keralaCenter,
                     mapTypeControl: false,
                     streetViewControl: false,
                     fullscreenControl: true,
                 });
-    
-                // Example list of police stations in Kerala (replace or fetch real data from an API)
+        
+                // Add static markers (for testing purposes)
+                addStaticMarkers();
+        
+                // Fetch dynamic police station data from the server
+                fetchDynamicMarkers();
+            }
+        
+            // Add static markers for testing
+            function addStaticMarkers() {
                 const policeStations = [
                     { name: "Thiruvananthapuram Police Station", location: { lat: 8.5241, lng: 76.9366 } },
                     { name: "Kochi Police Station", location: { lat: 9.9312, lng: 76.2673 } },
                     { name: "Kozhikode Police Station", location: { lat: 11.2588, lng: 75.7804 } },
                     { name: "Thrissur Police Station", location: { lat: 10.5276, lng: 76.2144 } },
                     { name: "Kannur Police Station", location: { lat: 11.8745, lng: 75.3704 } },
+                    { name: "Alappuzha Police Station", location: { lat: 9.4981, lng: 76.3388 } },
+                    { name: "Palakkad Police Station", location: { lat: 10.7743, lng: 76.6514 } },
+                    { name: "Kottayam Police Station", location: { lat: 9.5916, lng: 76.5222 } },
                 ];
-    
-                // Add markers for each police station
+        
                 policeStations.forEach(station => {
                     const marker = new google.maps.Marker({
                         position: station.location,
                         map: map,
                         title: station.name,
                     });
-    
-                    // Add an info window for each marker
+        
                     const infoWindow = new google.maps.InfoWindow({
                         content: `<strong>${station.name}</strong>`,
                     });
-    
-                    // Show info window on marker click
+        
                     marker.addListener("click", () => {
                         infoWindow.open(map, marker);
                     });
                 });
             }
-    
-            // Initialize the map after the page loads
+        
+            // Fetch dynamic markers from the server
+            function fetchDynamicMarkers() {
+                fetch('/api/police_stations')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        data.forEach(station => {
+                            const marker = new google.maps.Marker({
+                                position: { lat: station.latitude, lng: station.longitude },
+                                map: map,
+                                title: station.name,
+                            });
+        
+                            const infoWindow = new google.maps.InfoWindow({
+                                content: `<strong>${station.name}</strong>`,
+                            });
+        
+                            marker.addListener("click", () => {
+                                infoWindow.open(map, marker);
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching police stations:", error);
+                    });
+            }
+        
+            // Initialize the map when the window loads
             window.onload = initMap;
         </script>
-
+        
+    
     
 </body>
 </html>
