@@ -8,7 +8,11 @@ import re
 from django.core.files.storage import default_storage
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+
+
+# from django.contrib.auth.decorators import login_required
 
 # from django.contrib.auth.decorators import login_required
 # from django.db.models import Q
@@ -30,13 +34,21 @@ def login(req):
     if 'user' in req.session:
         return redirect(userhome)
     if 'police' in req.session:
-        return redirect(policehome)
-    
+        return redirect(view_complaints)
+
     if req.method == 'POST':
-        email = req.POST['Email']  # Lowercase as per the custom model
+        email = req.POST['Email']
         password = req.POST['password']
+        
+        # Check if it's an admin login
+        admin_user = authenticate(username=email, password=password)
+        if admin_user and admin_user.is_superuser:
+            auth_login(req, admin_user)
+            return redirect(adminhome)
+
+        # Handle normal user login
         try:
-            user = User.objects.get(Email=email, password=password)  # Use custom model field names
+            user = User.objects.get(Email=email, password=password)
             req.session['user'] = user.Email
             return redirect(userhome)
         except User.DoesNotExist:
@@ -46,6 +58,7 @@ def login(req):
                 return redirect(view_complaints)
             except Police.DoesNotExist:
                 messages.warning(req, "Invalid email or password")
+    
     return render(req, 'login.html')
 
 
@@ -54,7 +67,10 @@ def logout(req):
         del req.session['user']
     if 'police' in req.session:
         del req.session['police']
+    if req.user.is_authenticated:
+        auth_logout(req)  # Logout for admin users
     return redirect(login)
+
 
 
 
@@ -192,12 +208,6 @@ def updateuserprofile(req):
     else:
         return redirect(login)
     
-# def userhistory(req):
-#     if 'user' in req.session:
-#         data=User.objects.all()
-#         return render(req,'user/user_history.html',{'data':data})
-#     else:
-#         return redirect(login)
 
 def userhistory(req):
     if 'user' in req.session:
@@ -329,6 +339,22 @@ def chats(req, id):
 ##################  admin ###############
 
 
+
+
+@login_required
+def adminhome(req):
+    if not req.user.is_superuser:
+        return redirect(login)
+    data=Complaint.objects.all()
+    return render(req,'admin/viewcomplaint.html',{'data':data})
+
+@login_required
+def viewusers(req):
+    if not req.user.is_superuser:
+        return redirect(login)
+    data = User.objects.all()
+    return render(req, 'admin/viewusers.html', {'data': data})
+
 def adminhome(req):
     return render(req,'admin/adminhome.html')
 
@@ -336,11 +362,11 @@ def viewpolice(req):
     data=Police.objects.all()
     return render(req,'admin/viewpolice.html',{'data':data})
 
-def viewusers(req):
-    data=User.objects.all()
-    return render(req,'admin/viewusers.html',{'data':data})
+# def viewusers(req):
+#     data=User.objects.all()
+#     return render(req,'admin/viewusers.html',{'data':data})
 
-def  viewcomplaint(req):
+def viewcomplaint(req):
     data=Complaint.objects.all()
     return render(req,'admin/viewcomplaint.html',{'data':data})
 
