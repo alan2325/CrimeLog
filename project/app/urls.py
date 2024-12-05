@@ -15,6 +15,8 @@ path('updateuserprofile',views.updateuserprofile),
 path('userhistory',views.userhistory),
 path('chat/<int:id>', views.chat, name='chat'),
 path('contactus',views.contactus),
+path('message/<int:id>', views.message, name='message'),
+
 
 
 
@@ -29,11 +31,7 @@ path('viewuser',views.viewuser),
 path("complainthistory/", views.registered_complaints, name="complainthistory"),
 path('delete/<int:id>',views.delete),
 path('chats/<int:id>', views.chats, name='chats'),
-
-# path('deleteitem/<int:id>',views.deleteitem),
-
- path('userchat/', views.userchat_box, name='chat_box'),  # For user
-path('policechat/', views.police_chat_box, name='police_chat_box'), 
+path('messagee/<int:id>', views.messagee, name='messagee'),
 
 
 

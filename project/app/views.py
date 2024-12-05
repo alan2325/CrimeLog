@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
@@ -8,6 +8,8 @@ import re
 from django.core.files.storage import default_storage
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+
 # from django.contrib.auth.decorators import login_required
 # from django.db.models import Q
 
@@ -95,8 +97,9 @@ def user_reg(req):
 def userhome(req):
     if 'user' in req.session:
         # user = get_user(req)
+        police_id = 123 
         complaint = Complaint.objects.filter().order_by('-created_at') 
-        return render(req,'user/home.html',{'complaint':complaint})
+        return render(req,'user/home.html',{'complaint':complaint,'police_id': police_id})
     else:
         return redirect(login)
     
@@ -292,17 +295,8 @@ def viewuser(req):
     # if 'police' not in req.session:
         data=User.objects.all()
         return render(req,'police/viewuser.html', {'data':data})
-    # else:
-    #     return redirect(login)
+    
 
-# def registered_complaints(request):
-#     if request.user.is_staff:  # If the user is a police/admin
-#         complaints = Complaint.objects.all()
-#     else:  # If the user is a general user
-#         complaints = Complaint.objects.filter(user=request.user)
-
-#     return render(request, "complaint_history.html", {"complaints": complaints})    
-# 
 
 def registered_complaints(req):
     if 'police' in req.session:
@@ -362,48 +356,40 @@ def addstation(req):
 
 
 
-# @login_required
-def userchat_box(request):
-    """Handles chat between user and police"""
-    # police = Police.objects.get(id=police_id)
-    # chats = Chat.objects.filter(police=police, user=request.user).order_by('timestamp')
 
-    if request.method == 'POST':
-        content = request.POST.get('content')
-        if content.strip():  # Basic validation to ensure content is not empty
-            Chat.objects.create(
-                # police=police,
-                user=request.user,
-                content=content
-            )
-        return redirect(userchat_box)
+###Ask Anything
 
-    return render(request, 'user/chat_box.html', {
-        'chats': chats,
-        # 'police': police,
-        'is_police': False,
-    })
+def message(req, id):
+    if 'user' in req.session:
+        police = Police.objects.get(pk=id)
+        user_id = req.session.get('user')  # Assuming `user` is the ID stored in session
+        user = User.objects.get(pk=id)  # Retrieve the logged-in user
+        
+        data1 = Chat.objects.filter(police=police)
+        police_officers = Police.objects.all()  # Fetch all police officers for assignment
+
+        if req.method == 'POST':
+            msg = req.POST.get('content')
+            if msg:
+                data = Chat.objects.create(police=police, user=user, content=msg)
+                data.save()
+        
+        return render(req, 'user/message.html', {'data1': data1, 'police_officers': police_officers})
+    else:
+        return redirect(login)
 
 
-# @login_required
-def police_chat_box(request):
-    """Handles chat from the police perspective"""
-    # user = User.objects.get(id=user_id)
-    # police = Police.objects.get(user=request.user)  # Assuming Police is linked to User
-    # chats = Chat.objects.filter(police=police).order_by('timestamp')
+def messagee(req, id):
+    user = User.objects.get(pk=id)  # Assuming `id` corresponds to the user
+    police_id = req.POST.get('police_id')  # Get the police ID from the form (hidden input or dropdown)
+    police = Police.objects.get(pk=id)  # Retrieve the police object
+    
+    data1 = Chat.objects.filter(user=user)
 
-    if request.method == 'POST':
-        content = request.POST.get('content')
-        if content.strip():  # Basic validation to ensure content is not empty
-            Chat.objects.create(
-                # police=police,
-                # user=user,
-                content=content
-            )
-        return redirect('police_chat_box')
-
-    return render(request, 'police/chat_box.html', {
-        'chats': chats,
-        # 'police': police,
-        'is_police': True,
-    })
+    if req.method == 'POST':
+        msg = req.POST.get('content')
+        if msg:
+            data = Chat.objects.create(user=user, police=police, content=msg)
+            data.save()
+    
+    return render(req, 'police/messagee.html', {'data1': data1})
