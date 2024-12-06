@@ -225,9 +225,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../userhistory">View History</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="../message">Ask Anything</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="../contactus">Contact Us</a>
                     </li>
@@ -241,8 +241,8 @@
                     <span class="search-icon"><i class="bi bi-search"></i></span>
                     <form class="d-flex" method="post" action="{% url 'policesearch' %}">
                         {% csrf_token %}
-                        <input type="text" class="form-control me-2" name="query" placeholder="Search for products...">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <input type="text" class="form-control me-2" name="query" placeholder="Search for ...">
+                        <!-- <button type="submit" class="btn btn-primary">Search</button> -->
                       </form>
                 </div>
 

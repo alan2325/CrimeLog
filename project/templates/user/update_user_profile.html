@@ -87,96 +87,110 @@
 
 
           /* ######################## profile upade ######################### */
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f9ff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
 
-        .profile-container {
-            background-color: #fff;
-            width: 100%;
-            max-width: 600px;
-            margin-left: 5%;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin:  50px 0 50px 0;
-        }
+/* Profile Container */
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+}
 
-        .profile-image-container {
-            position: relative;
-            margin-bottom: 20px;
-        }
+/* Profile Image Section */
+.profile-image-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .profile-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            background-color: #343a40;
-            margin-bottom: 10px;
-        }
+.profile-image-wrapper {
+    position: relative;
+    display: inline-block;
+}
 
-        .upload-label {
-            display: block;
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-            width: 100%;
-            max-width: 180px;
-            margin: 10px auto;
-        }
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #007bff;
+    object-fit: cover;
+}
 
-        #image-upload {
-            display: none;
-        }
+.upload-label {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-        .profile-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.hidden-input {
+    display: none;
+}
 
-        .profile-form label {
-            font-size: 16px;
-            margin-top: 10px;
-            text-align: left;
-            width: 100%;
-            max-width: 400px;
-            padding-left: 20px;
-        }
+/* Profile Form */
+.profile-form-container {
+    padding: 20px;
+}
 
-        .profile-form input {
-            width: 100%;
-            max-width: 400px;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
+.form-title {
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .profile-form input[type="password"] {
-            margin-bottom: 15px;
-        }
+.form-group {
+    margin-bottom: 15px;
+}
 
-        .edit-button {
-            padding: 12px 30px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
 
-        .edit-button:hover {
-            background-color: #0056b3;
-        }
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Submit Button */
+.submit-button {
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
 
 
 
@@ -265,9 +279,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../userhistory">View History</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="../userchat">Ask Anything</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="../contactus">Contact Us</a>
                     </li>
@@ -310,63 +324,84 @@
     </nav>
 
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Profile</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
 
-<div class="profile-container">
-    <!-- Profile Image Upload Section -->
-    <div class="profile-image-container">
-        <img src="../static/images/profile.png" alt="Profile Image" class="profile-image" id="profile-img">
-        <label for="image-upload" class="upload-label">Change Profile Picture</label>
-        <input type="file" id="image-upload" name="profile-image" accept="image/*" />
+    <div class="profile-container">
+        <!-- Profile Image Upload Section -->
+        <div class="profile-image-section">
+            <div class="profile-image-wrapper">
+                <img 
+                    src="{{ data.profile_picture_url | default:'/static/images/default-profile.png' }}" 
+                    alt="Profile Image" 
+                    class="profile-image" 
+                    id="profile-img"
+                >
+                <label for="image-upload" class="upload-label">Change Profile Picture</label>
+                <input 
+                    type="file" 
+                    id="image-upload" 
+                    name="profile-image" 
+                    accept="image/*" 
+                    class="hidden-input"
+                />
+            </div>
+        </div>
+    
+        <!-- Profile Update Form -->
+        <div class="profile-form-container">
+            <h2 class="form-title">Update Profile</h2>
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        value="{{ data.username }}" 
+                        required 
+                        class="form-input"
+                    >
+                </div>
+    
+                <div class="form-group">
+                    <label for="phonenumber">Phone Number:</label>
+                    <input 
+                        type="text" 
+                        id="phonenumber" 
+                        name="phonenumber" 
+                        value="{{ data.phonenumber }}" 
+                        required 
+                        class="form-input"
+                    >
+                </div>
+    
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        name="location" 
+                        value="{{ data.location }}" 
+                        required 
+                        class="form-input"
+                    >
+                </div>
+    
+                <div class="form-group">
+                    <label for="profile_picture">Profile Picture:</label>
+                    <input 
+                        type="file" 
+                        id="profile_picture" 
+                        name="profile_picture" 
+                        class="form-input"
+                    >
+                </div>
+    
+                <button type="submit" class="submit-button">Save Changes</button>
+            </form>
+        </div>
     </div>
     
-    <!-- Profile Update Form -->
-    {% comment %} <form class="profile-form" action="/updateProfile" method="POST" enctype="multipart/form-data">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="{{data.username}}" required>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter a new password" required>
-
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" value="{{data.phonenumber}}" required>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" value="{{data.location}}" required>
-
-        <!-- <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{data.email}}" required> -->
-
-    </form> {% endcomment %}
-
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" name="username" value="{{ data.username }}" required><br><br>
-        
-        <label for="phonenumber">Phone Number:</label>
-        <input type="text" name="phonenumber" value="{{ data.phonenumber }}" required><br><br>
-        
-        <label for="location">Location:</label>
-        <input type="text" name="location" value="{{ data.location }}" required><br><br>
-    
-        <label for="profile_picture">Profile Picture:</label>
-        <input type="file" name="profile_picture">
-    
-        <button type="submit" class="edit-button">Save Changes</button>
-
-    </form>
-    
-</div>
-
 <script>
     const imageUpload = document.getElementById('image-upload');
     const profileImage = document.getElementById('profile-img');
@@ -384,8 +419,7 @@
     });
 </script>
 
-</body>
-</html>
+
 
 </body>
 </html>

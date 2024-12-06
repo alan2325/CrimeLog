@@ -17,6 +17,10 @@
             height: 80px;
         }
 
+        .navbar .nav-link:active{
+            color: #007bff;
+        }
+
         .navbar-brand img {
             max-height: 60px;
         }
@@ -85,6 +89,11 @@
         .dropdown-menu .dropdown-item:hover {
             background-color: #4d73f1;
             color: #fff;
+        }
+
+
+        h3{
+            text-align: center;
         }
 
 
@@ -177,11 +186,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../userhistory">View History</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="../userchat">Ask Anything</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
-                        <a class="nav-link" href="../contactus">Contact Us</a>
+                        <a class="nav-link active" href="../contactus">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../logout">Logout</a>
@@ -191,7 +200,7 @@
                       <!-- Search bar -->
                 <div class="search-bar">
                     <span class="search-icon"><i class="bi bi-search"></i></span>
-                    <form method="post" action="{% url 'usersearch' %}">
+                    <form class="d-flex" method="post" action="{% url 'usersearch' %}">
                         {% csrf_token %}
                         <input class="form-control" type="text" name="query" placeholder="Search for...">
                         <!-- <button type="submit" class="btn btn-primary" ></button> -->
