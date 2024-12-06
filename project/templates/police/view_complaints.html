@@ -215,11 +215,11 @@
                       <!-- Search bar -->
                 <div class="search-bar">
                     <span class="search-icon"><i class="bi bi-search"></i></span>
-                    <form method="post" action="{% url 'usersearch' %}">
+                    <form class="d-flex" method="post" action="{% url 'usersearch' %}">
                         {% csrf_token %}
-                        <input class="form-control" type="text" name="query" placeholder="Search for...">
-                        <!-- <button type="submit" class="btn btn-primary" ></button> -->
-                    </form>
+                        <input type="text" type="submit" class="form-control me-2" name="query" placeholder="Search for products...">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                      </form>
                 </div>
 
                 <!-- Profile Dropdown -->

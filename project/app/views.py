@@ -310,6 +310,15 @@ def delete(req,id):
     data.delete()
     return redirect(policehome) 
 
+def usersearch(request):
+    query = request.POST.get('query')  # Get the search term from the request
+    user = []
+    if query:
+        user = User.objects.filter(username=query)
+        
+    return render(request, 'police/usersearch.html', {'user': user, 'query': query})
+
+
 def viewuser(req):
     # if 'police' not in req.session:
         data=User.objects.all()

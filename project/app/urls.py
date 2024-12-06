@@ -33,6 +33,8 @@ path("complainthistory/", views.registered_complaints, name="complainthistory"),
 path('delete/<int:id>',views.delete),
 path('chats/<int:id>', views.chats, name='chats'),
 path('messagee/', views.messagee, name='messagee'),
+path('usersearch/', views.usersearch, name='usersearch'),
+
 
 
 
