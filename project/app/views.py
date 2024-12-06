@@ -384,38 +384,52 @@ def addstation(req):
 
 
 ###Ask Anything
-
-def message(req, id):
-    if 'user' in req.session:
-        police = Police.objects.get(pk=id)
-        user_id = req.session.get('user')  # Assuming `user` is the ID stored in session
-        user = User.objects.get(pk=id)  # Retrieve the logged-in user
+def message(req):
+    if 'user' in req.session:  # Check if the user is logged in
+        user_email = req.session.get('user')  # Get the user's email from the session
+        user = User.objects.get(Email=user_email)  # Retrieve the user object using email
         
-        data1 = Chat.objects.filter(police=police)
-        police_officers = Police.objects.all()  # Fetch all police officers for assignment
+        police_officers = Police.objects.all()  # Fetch all police officers
+
+        # Fetch all messages where the user or police is involved
+        data1 = Chat.objects.filter(user=user).order_by('id')
 
         if req.method == 'POST':
-            msg = req.POST.get('content')
-            if msg:
-                data = Chat.objects.create(police=police, user=user, content=msg)
-                data.save()
-        
-        return render(req, 'user/message.html', {'data1': data1, 'police_officers': police_officers})
+            msg = req.POST.get('content')  # Get the message content
+            police_id = req.POST.get('police_id')  # Get the police officer's ID
+            if msg and police_id:
+                police = Police.objects.get(pk=police_id)  # Retrieve the police officer
+                # Create a new chat message
+                Chat.objects.create(user=user, police=police, content=msg)
+
+        return render(req, 'user/message.html', {
+            'data1': data1,
+            'police_officers': police_officers,
+        })
     else:
-        return redirect(login)
+        return redirect('login')  # Redirect to login if the user is not logged in
 
 
-def messagee(req, id):
-    user = User.objects.get(pk=id)  # Assuming `id` corresponds to the user
-    police_id = req.POST.get('police_id')  # Get the police ID from the form (hidden input or dropdown)
-    police = Police.objects.get(pk=id)  # Retrieve the police object
-    
-    data1 = Chat.objects.filter(user=user)
 
-    if req.method == 'POST':
-        msg = req.POST.get('content')
-        if msg:
-            data = Chat.objects.create(user=user, police=police, content=msg)
-            data.save()
-    
-    return render(req, 'police/messagee.html', {'data1': data1})
+
+def messagee(req):
+    if 'police' in req.session:  # Check if the police officer is logged in
+        police_email = req.session.get('police')  # Get the police officer's email from the session
+        police = Police.objects.get(Email=police_email)  # Retrieve the police object
+        
+        # Fetch all messages where the police officer or user is involved
+        data1 = Chat.objects.filter(police=police).order_by('id')
+
+        if req.method == 'POST':
+            msg = req.POST.get('content')  # Get the message content
+            user_id = req.POST.get('user_id')  # Get the user's ID from the form
+            if msg and user_id:
+                user = User.objects.get(pk=user_id)  # Retrieve the user object
+                # Create a new chat message
+                Chat.objects.create(police=police, user=user, content=msg)
+
+        return render(req, 'police/messagee.html', {
+            'data1': data1,
+        })
+    else:
+        return redirect('login')  # Redirect to login if the police officer is not logged in

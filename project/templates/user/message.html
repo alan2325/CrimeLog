@@ -275,36 +275,43 @@
 
     <h2 id="h2">Chat With
 
+        <select name="police_id">
+            {% for officer in police_officers %}
+                <option value="{{ officer.id }}">{{ officer.name }}</option>
+            {% endfor %}
+        </select>
 
 
-    <select name="police" id="police" required>
-        <option value="" disabled selected>Select Station</option>
-        {% for officer in police_officers %}
-            <option value="{{ officer.id }}">{{ officer.name }}</option>
-
-           
-        {% endfor %}
-    </select></h2>
+        </h2>
     
 
     <!-- Chat Container -->
     <div id="chat-container">
         <!-- Chat Box -->
         <div id="chat-box">
-            {% for message in data1 %}
-                <div class="message {% if message.sender == user %}user-message{% else %}reply-message{% endif %}">
-                    <p>{{ message.content }}</p>
-                    <div class="timestamp">{{ message.timestamp }}</div>
-                </div>
-            {% endfor %}
+            {% for chat in data1 %}
+    <p>{{ chat.content }} </p>
+   <p> {{ chat.created_at }}</p>
+    {% endfor %}
         </div>
 
         <!-- Message Input -->
+
         <form id="message-input" method="POST">
             {% csrf_token %}
             <textarea name="content" rows="1" placeholder="Type your message..."></textarea>
+            {% if police_officers %}
+                <select name="police_id">
+                    {% for officer in police_officers %}
+                        <option value="{{ officer.id }}">{{ officer.name }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+            {% endif %}
             <button type="submit">Send</button>
         </form>
+       
     </div>
 </body>
 </html>

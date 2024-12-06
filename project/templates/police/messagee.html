@@ -159,41 +159,33 @@
         </div>
     </nav>
     <h2>Chat with User</h2>
-    <form method="POST" class="my-3">
-        {% csrf_token %}
-        {% comment %} <div class="mb-3">
-            <label for="policeSelect" class="form-label">Select Officer:</label>
-            <select id="policeSelect" name="police_id" class="form-select">
-                {% for police in police_officers %}
-                    <option value="{{ police.id }}" {% if selected_police and police.id == selected_police.id %}selected{% endif %}>
-                        {{ police.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div> {% endcomment %}
-        <div class="mb-3">
-            <textarea name="content" class="form-control" rows="3" placeholder="Type your message..."></textarea>
+
+    <!-- Chat Container -->
+    <div id="chat-container">
+        <!-- Chat Box -->
+        <div id="chat-box">
+            {% for chat in data1 %}
+    <p>{{ chat.content }} </p>
+   <p> {{ chat.created_at }}</p>
+    {% endfor %}
         </div>
-        <button type="submit" class="btn btn-primary">Send</button>
-    </form>
-    
-    <div class="mt-4">
-        <h3>User Messages</h3>
 
-        {% comment %} <form method="post">
+        <!-- Message Input -->
+
+        <form id="message-input" method="POST">
             {% csrf_token %}
-            <textarea name="content" placeholder="Enter your message"></textarea>
-            <input type="hidden" name="police_id" value="{{ police.id }}">
+            <textarea name="content" rows="1" placeholder="Type your message..."></textarea>
+            {% if police_officers %}
+                <select name="police_id">
+                    {% for officer in police_officers %}
+                        <option value="{{ officer.id }}">{{ officer.name }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+            {% endif %}
             <button type="submit">Send</button>
-        </form> {% endcomment %}
-        
-        {% for i in data1 %}
-            <div class="border p-2 mb-2 rounded">
-                <p><strong>Message:</strong> {{ i.content }}</p>
-                <p><small><strong>Time:</strong> {{ i.timestamp }}</small></p>
-            </div>
-        {% endfor %}
-    </div>   
-
+        </form>
+    </div>
 </body>
 </html>

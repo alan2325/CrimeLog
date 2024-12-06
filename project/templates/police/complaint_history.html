@@ -178,7 +178,7 @@
                     <td>{{ complaint.description }}</td>
                     <td>{{ complaint.status }}</td>
                     <td><a class="btn btn-primary" href="../chats/{{complaint.pk}}">Chat</a>
-                    <td><a id="btn" href="../messagee/{{complaint.pk}}">Ask Anything</a></td>
+                    {% comment %} <td><a id="btn" href="../messagee">Ask Anything</a></td> {% endcomment %}
 
                 </tr>
                 {% empty %}
