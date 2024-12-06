@@ -59,6 +59,114 @@
 
         }
 
+        #chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 100px);
+            padding: 50px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f7f9fc;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        
+        /* Message styling */
+        .message {
+            max-width: 60%;
+            margin: 10px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        /* User message styles */
+        .user-message {
+            background-color: #007bff;
+            color: #fff;
+            margin-left: auto;
+            text-align: left;
+            border-top-right-radius: 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Officer message styles */
+        .officer-message {
+            background-color: #e9ecef;
+            color: #212529;
+            margin-right: auto;
+            text-align: left;
+            border-top-left-radius: 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Timestamp styling */
+        .timestamp {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+            display: block;
+            text-align: right;
+        }
+        
+        .message-content {
+            margin: 0;
+        }
+        
+
+        .message-content {
+            margin: 0;
+        }
+        
+
+        #message-input {
+            display: flex;
+            padding: 10px;
+            background-color: #fff;
+            border-top: 1px solid #dee2e6;
+        }
+
+        #message-input textarea {
+            flex: 1;
+            resize: none;
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        #message-input button {
+            background-color: #0d6efd;
+            border: none;
+            color: white;
+            padding: 0 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        #message-input button:hover {
+            background-color: #0056b3;
+        }
+
+        h2{
+            text-align:center;
+        }
+
 
         /*########### Profile dropdown styles ########*/
         .profile-img {
@@ -160,19 +268,53 @@
     </nav>
     <h2>Chat with User</h2>
 
+
+
+     <!-- Chat Container -->
+     <div id="chat-container">
+        <!-- Chat Box -->
+        <!-- Chat Box -->
+<div id="chat-box">
+    {% for chat in data1 %}
+    <div class="message {% if chat.sender == 'user' %}user-message{% else %}officer-message{% endif %}">
+        <p class="message-content">{{ chat.content }}</p>
+        <span class="timestamp">{{ chat.timestamp }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+
+        <!-- Message Input -->
+
+        <form id="message-input" method="POST">
+            {% csrf_token %}
+            <textarea name="content" rows="1" placeholder="Type your message..."></textarea>
+             {% if police_officers %}
+                <select name="police_id">
+                    {% for officer in police_officers %}
+                        <option value="{{ officer.id }}">{{ officer.name }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+            {% endif %} 
+            <button type="submit">Send</button>
+        </form>
+       
+    </div>
     <!-- Chat Container -->
-    <div id="chat-container">
+    {% comment %} <div id="chat-container">
         <!-- Chat Box -->
         <div id="chat-box">
             {% for chat in data1 %}
     <p>{{ chat.content }} </p>
    <p> {{ chat.created_at }}</p>
     {% endfor %}
-        </div>
+        </div> {% endcomment %}
 
         <!-- Message Input -->
 
-        <form id="message-input" method="POST">
+        {% comment %} <form id="message-input" method="POST">
             {% csrf_token %}
             <textarea name="content" rows="1" placeholder="Type your message..."></textarea>
             {% if police_officers %}
@@ -186,6 +328,6 @@
             {% endif %}
             <button type="submit">Send</button>
         </form>
-    </div>
+    </div> {% endcomment %}
 </body>
 </html>

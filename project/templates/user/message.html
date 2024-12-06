@@ -129,35 +129,55 @@
             flex: 1;
             padding: 15px;
             overflow-y: auto;
-            background-color: #f0f2f5;
+            background-color: #f7f9fc;
+            border: 1px solid #ddd;
+            border-radius: 10px;
         }
-
+        
+        /* Message styling */
         .message {
-            max-width: 70%;
-            margin: 10px 0;
+            max-width: 60%;
+            margin: 10px;
             padding: 10px 15px;
             border-radius: 15px;
             position: relative;
+            font-size: 1rem;
+            line-height: 1.5;
         }
-
-        .message .timestamp {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        .message.user-message {
-            background-color: #d1e7dd;
+        
+        /* User message styles */
+        .user-message {
+            background-color: #007bff;
+            color: #fff;
             margin-left: auto;
             text-align: left;
+            border-top-right-radius: 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
-
-        .message.reply-message {
+        
+        /* Officer message styles */
+        .officer-message {
             background-color: #e9ecef;
+            color: #212529;
             margin-right: auto;
             text-align: left;
+            border-top-left-radius: 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
+        
+        /* Timestamp styling */
+        .timestamp {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+            display: block;
+            text-align: right;
+        }
+        
+        .message-content {
+            margin: 0;
+        }
+        
 
         #message-input {
             display: flex;
@@ -273,13 +293,13 @@
 
 
 
-    <h2 id="h2">Chat With
+    <h2 id="h2">Chat With Officers
 
-        <select name="police_id">
+        {% comment %} <select name="police_id">
             {% for officer in police_officers %}
                 <option value="{{ officer.id }}">{{ officer.name }}</option>
             {% endfor %}
-        </select>
+        </select> {% endcomment %}
 
 
         </h2>
@@ -288,12 +308,16 @@
     <!-- Chat Container -->
     <div id="chat-container">
         <!-- Chat Box -->
-        <div id="chat-box">
-            {% for chat in data1 %}
-    <p>{{ chat.content }} </p>
-   <p> {{ chat.created_at }}</p>
+        <!-- Chat Box -->
+<div id="chat-box">
+    {% for chat in data1 %}
+    <div class="message {% if chat.sender == 'user' %}user-message{% else %}officer-message{% endif %}">
+        <p class="message-content">{{ chat.content }}</p>
+        <span class="timestamp">{{ chat.timestamp }}</span>
+    </div>
     {% endfor %}
-        </div>
+</div>
+
 
         <!-- Message Input -->
 
