@@ -16,6 +16,7 @@ path('userhistory',views.userhistory),
 path('chat/<int:id>', views.chat, name='chat'),
 path('contactus',views.contactus),
 path('message/', views.message, name='message'),
+path('policesearch/', views.policesearch, name='policesearch'),
 
 
 

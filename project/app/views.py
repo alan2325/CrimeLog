@@ -231,6 +231,15 @@ def chat(req,id):
     else:
         return redirect(login) 
 
+
+def policesearch(request):
+    query = request.POST.get('query')  # Get the search term from the request
+    police = []
+    if query:
+        police = Police.objects.filter(name=query)
+        
+    return render(request, 'user/policesearch.html', {'police': police, 'query': query})
+
     
 def contactus(req):
     if 'user' in req.session:
