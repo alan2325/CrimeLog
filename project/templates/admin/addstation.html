@@ -6,198 +6,126 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <title>CrimeLog</title>
+    <title>Add Station - CrimeLog</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
 
         #nav {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             background-color: #343a40;
-            height: 80px;
-        }
-
-        .navbar-brand img {
-            max-height: 60px;
         }
 
         .navbar .nav-link {
             color: #fff;
-            transition: color 0.3s ease;
-            margin: 10px;
+            margin: 0 10px;
         }
 
         .navbar .nav-link:hover {
             color: #91aafa;
         }
 
-        .navbar-toggler {
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-        }
-
-        .search-bar {
-            position: relative;
-            width: 300px;
-        }
-
-        .search-bar input {
-            padding-left: 40px;
-            border: 1px solid #ced4da;
-            border-radius: 25px;
-        }
-
-        .search-bar .search-icon {
-            position: absolute;
-            top: 50%;
-            left: 10px;
-            transform: translateY(-50%);
-            font-size: 1rem;
-            color: #6c757d;
-
-        }
-
-        /* Profile dropdown styles */
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #fff;
-            background-color: #343a40;
-        }
-
-        .dropdown-menu {
-            min-width: 200px;
-            background-color: #2c2727; /* Black background */
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+            background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
         }
 
-        .dropdown-menu .dropdown-item {
-            color: #fff; /* White text */
-            
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #343a40;
         }
 
-        .dropdown-menu .dropdown-item:hover {
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .registerbtn {
+            width: 100%;
+            padding: 10px;
             background-color: #4d73f1;
-            color: #fff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
-        /* responsive */
+        .registerbtn:hover {
+            background-color: #3a5ec4;
+        }
 
-        /* @media only screen and (max-width: 768px) {
-            #mynavbar {
-            background-color: #2c2727;
-            }
-        }   */
-
-        @media only screen and (max-width:  992px) {
-            #mynavbar {
-            background-color: #2c2727;
-
-            }
-            .search-bar{
-                margin-left: 20px;
-            }
-            #profileDropdown{
-                margin: 10px;
-            }
-        }  
+        .alert {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav id="nav" class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand" href="../adminhome">
-                <img id="logo" src="../static/images/logo.png" alt="CrimeLog">
+            <a class="navbar-brand" href="../viewcomplaint">
+                <img src="../static/images/logo.png" alt="CrimeLog" style="max-height: 50px;">
             </a>
-
-            <!-- Toggler for smaller screens -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Navbar content -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Left links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../viewpolice">View Police</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../viewusers">View Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../viewcomplaint">Complaints</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../logout">Logout</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="../viewpolice">View Police</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../viewusers">View Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../addstation">Add Station</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../viewcomplaint">Complaints</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../logout">Logout</a></li>
                 </ul>
-
-                      <!-- Search bar -->
-                <div class="search-bar">
-                    <span class="search-icon"><i class="bi bi-search"></i></span>
-                    <form method="post" action="{% url 'usersearch' %}">
-                        {% csrf_token %}
-                        <input class="form-control" type="text" name="query" placeholder="Search for...">
-                        <!-- <button type="submit" class="btn btn-primary" ></button> -->
-                    </form>
-                </div>
-
-                <!-- Profile Dropdown -->
-                <div class="dropdown ms-3">
-                    <button class="btn btn-link dropdown p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="static/images/profile.png" alt="Profile" class="profile-img">
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                        <li class="text-center">
-                            <img src="../static/images/profile.png" alt="User" class="my-2">
-                            <div style="color: white;"><strong>User Name</strong></div>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="../userprofile">View Profile</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="../logout">Logout</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
     </nav>
 
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="container">
-          <h1>ADD STATION</h1>
-          {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-warning alert-dismissible">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            {{ message }}
-          </div>
-          {% endfor %}
-          {% endif %}
-      
-          <label for="name"><b>Name:</b></label>
-          <input type="text" placeholder="Enter product name" name="name" id="name" required><br><br>
-      
-          <label for="discription"><b>Email:</b></label>
-          <input type="text" placeholder="Enter Email" name="Email" id="Email" required><br><br>
-      
-          <label for="price"><b>Password :</b></label>
-          <input type="text" placeholder="Enter password" name="password" id="password" required><br><br>
-      
-         
-          <button type="submit" class="registerbtn">Register</button>
-        </div>
-      </form>
-
-
+    <!-- Form Section -->
+    <div class="container">
+        <h1>Add Station</h1>
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter station name" required>
+            </div>
+            <div class="mb-3">
+                <label for="Email">Email:</label>
+                <input type="text" id="Email" name="Email" placeholder="Enter email address" required>
+            </div>
+            <div class="mb-3">
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="registerbtn">Register</button>
+        </form>
+    </div>
 </body>
 </html>

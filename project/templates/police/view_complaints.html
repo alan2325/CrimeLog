@@ -213,17 +213,17 @@
                 </ul>
 
                       <!-- Search bar -->
-                <div class="search-bar">
-                    <span class="search-icon"><i class="bi bi-search"></i></span>
-                    <form class="d-flex" method="post" action="{% url 'usersearch' %}">
-                        {% csrf_token %}
-                        <input type="text" type="submit" class="form-control me-2" name="query" placeholder="Search for products...">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                      </form>
-                </div>
+                      <div class="search-bar">
+                        <span class="search-icon"><i class="bi bi-search"></i></span>
+                        <form method="post" action="{% url 'usersearch' %}">
+                            {% csrf_token %}
+                            <input class="form-control" type="text" name="query" placeholder="Search for...">
+                            <!-- <button type="submit" class="btn btn-primary" ></button> -->
+                        </form>
+                    </div>
 
                 <!-- Profile Dropdown -->
-                <div class="dropdown ms-3">
+                <!-- <div class="dropdown ms-3">
                     <button class="btn btn-link dropdown p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="../static/images/profile.png" alt="Profile" class="profile-img">
                     </button>
@@ -240,7 +240,7 @@
                             <a class="dropdown-item" href="../logout">Logout</a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </nav>

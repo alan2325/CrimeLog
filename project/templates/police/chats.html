@@ -93,6 +93,104 @@
         }
  
     }  
+
+
+
+    #chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 100px);
+            padding: 50px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f0f2f5;
+        }
+
+        .message {
+            max-width: 70%;
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .message .timestamp {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .message.user-message {
+            background-color: #d1e7dd;
+            margin-left: auto;
+            text-align: left;
+        }
+
+        .message.reply-message {
+            background-color: #e9ecef;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        #message-input {
+            display: flex;
+            padding: 10px;
+            background-color: #fff;
+            border-top: 1px solid #dee2e6;
+        }
+
+        #message-input textarea {
+            flex: 1;
+            resize: none;
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        #message-input button {
+            background-color: #0d6efd;
+            border: none;
+            color: white;
+            padding: 0 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        #message-input button:hover {
+            background-color: #0056b3;
+        }
+
+        h2{
+            text-align: center;
+        }
+
+        @media only screen and (max-width:  992px) {
+            #mynavbar {
+            background-color: #2c2727;
+
+            }
+            .search-bar{
+                margin-left: 20px;
+            }
+            #profileDropdown{
+                margin: 10px;
+            }
+        } 
     </style>
 </head>
 <body>
@@ -137,9 +235,9 @@
                 </div>
 
                 <!-- Profile Dropdown -->
-                <div class="dropdown ms-3">
+                <!-- <div class="dropdown ms-3">
                     <button class="btn btn-link dropdown p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="static/images/profile.png" alt="Profile" class="profile-img">
+                        <img src="../static/images/profile.png" alt="Profile" class="profile-img">
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li class="text-center">
@@ -154,12 +252,12 @@
                             <a class="dropdown-item" href="../logout">Logout</a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </nav>
     <h2>Chat with User</h2>
-    <form method="POST" class="my-3">
+    <!-- <form method="POST" class="my-3">
         {% csrf_token %}
         {% comment %} <div class="mb-3">
             <label for="policeSelect" class="form-label">Select Officer:</label>
@@ -185,7 +283,27 @@
                 <p><small><strong>Time:</strong> {{ i.timestamp }}</small></p>
             </div>
         {% endfor %}
-    </div>   
+    </div>    -->
+
+        <!-- Chat Container -->
+        <div id="chat-container">
+            <!-- Chat Box -->
+            <div id="chat-box">
+                {% for message in data1 %}
+                    <div class="message {% if message.sender == user %}user-message{% else %}reply-message{% endif %}">
+                        <p>{{ message.content }}</p>
+                        <div class="timestamp">{{ message.timestamp }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+    
+            <!-- Message Input -->
+            <form id="message-input" method="POST">
+                {% csrf_token %}
+                <textarea name="content" rows="1" placeholder="Type your message..."></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
 
 </body>
 </html>

@@ -92,48 +92,71 @@ h2{
 
 </style>
 <body>
-  <nav id="nav" class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand" href="../userhome">
-            <img id="logo" src="../static/images/logo.png" alt="CrimeLog">
-        </a>
+    <nav id="nav" class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="../userhome">
+                <img id="logo" src="../static/images/logo.png" alt="CrimeLog">
+            </a>
 
-        <!-- Toggler for smaller screens -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Toggler for smaller screens -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Navbar content -->
-        <div class="collapse navbar-collapse" id="mynavbar">
-            <!-- Left links -->
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="../submit_complaint">Give Complaint</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../userhistory">View History</a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="../message">Ask Anything</a>
-                </li> -->
-                <li class="nav-item">
-                    <a class="nav-link" href="../contactus">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../logout">Logout</a>
-                </li>
-            </ul>
-        
-  
-    <form class="d-flex" method="get" action="{% url 'policesearch' %}">
-      <input type="text" class="form-control me-2" name="query" placeholder="Search for products...">
-      <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-  
-      </div>
-    </div>
-  </nav>
+            <!-- Navbar content -->
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../submit_complaint">Give Complaint</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../userhistory">View History</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="../userchat">Ask Anything</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="../contactus">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../logout">Logout</a>
+                    </li>
+                </ul>
+
+                      <!-- Search bar -->
+                <div class="search-bar">
+                    <span class="search-icon"><i class="bi bi-search"></i></span>
+                    <form method="post" action="{% url 'usersearch' %}">
+                        {% csrf_token %}
+                        <input class="form-control" type="text" name="query" placeholder="Search for...">
+                        <!-- <button type="submit" class="btn btn-primary" ></button> -->
+                    </form>
+                </div>
+
+                <!-- Profile Dropdown -->
+                <div class="dropdown ms-3">
+                    <button class="btn btn-link dropdown p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../static/images/profile.png" alt="Profile" class="profile-img">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li class="text-center">
+                            <img src="../static/images/profile.png" alt="User" class="my-2">
+                            <div style="color: white;"><strong>User Name</strong></div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="../userprofile">View Profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="../logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
   
 <h2 class="text-center">Search Results for "{{ query }}"</h2>
 

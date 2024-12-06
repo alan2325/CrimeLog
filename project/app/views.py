@@ -44,7 +44,7 @@ def login(req):
         admin_user = authenticate(username=email, password=password)
         if admin_user and admin_user.is_superuser:
             auth_login(req, admin_user)
-            return redirect(adminhome)
+            return redirect(viewcomplaint)
 
         # Handle normal user login
         try:
