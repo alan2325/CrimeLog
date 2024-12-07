@@ -119,6 +119,8 @@ def userhome(req):
     else:
         return redirect(login)
     
+def aboutus(req):
+    return render(req,"user/about.html")
 
 def usersearch(req):
     if 'user' in req.session:
