@@ -120,18 +120,18 @@ def userhome(req):
         return redirect(login)
     
 def aboutus(req):
-    return render(req,"user/about.html")
+    return render(req,'user/about.html')
 
-def usersearch(req):
-    if 'user' in req.session:
-        query = req.GET.get('query') 
-        products = []
-        if query:
-            products = User.objects.filter(name__icontains=query)
+# def usersearch(req):
+#     if 'user' in req.session:
+#         query = req.GET.get('query') 
+#         products = []
+#         if query:
+#             products = User.objects.filter(name__icontains=query)
             
-        return render(req, 'user/usersearch.html', {'products': products, 'query': query})
-    else:
-        return redirect(login)
+#         return render(req, 'user/usersearch.html', {'products': products, 'query': query})
+#     else:
+#         return redirect(login)
     
 
 
@@ -213,7 +213,7 @@ def updateuserprofile(req):
 
 def userhistory(req):
     if 'user' in req.session:
-        user = get_user(req)  # Get the currently logged-in user
+        user = get_user(req)  
         complaints = Complaint.objects.filter(user=user).order_by('-created_at')  # Fetch complaints specific to this user
         return render(req, 'user/user_history.html', {'complaints': complaints})
     else:
@@ -232,6 +232,13 @@ def chat(req,id):
         return render(req,'user/chat.html',{'data1':data1})
     else:
         return redirect(login) 
+    
+def viewpolices(req):
+    
+        data=Police.objects.all()
+        return render(req,'user/viewpolice.html', {'data':data})
+    
+
 
 
 def policesearch(request):
@@ -322,7 +329,7 @@ def usersearch(request):
 
 
 def viewuser(req):
-    # if 'police' not in req.session:
+    
         data=User.objects.all()
         return render(req,'police/viewuser.html', {'data':data})
     

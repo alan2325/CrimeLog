@@ -18,6 +18,8 @@ path('contactus',views.contactus),
 path('about/', views.aboutus, name='about'),
 path('message/', views.message, name='message'),
 path('policesearch/', views.policesearch, name='policesearch'),
+path('viewpolices',views.viewpolices),
+
 
 
 
