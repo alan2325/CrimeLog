@@ -142,6 +142,16 @@
                 </ul>
             </div>
         </div>
+        <div class="search-bar">
+            <span class="search-icon"><i class="bi bi-search"></i></span>
+            <form method="post" action="{% url 'viewcomplaint' %}">
+                {% csrf_token %}
+                <input class="form-control" type="text" name="query" placeholder="Search by subject or description..." value="{{ query|default:'' }}">
+                <button class="btn btn-primary" type="submit">Search</button>
+
+            </form>
+        </div>
+        
     </nav>
 
 
@@ -149,19 +159,13 @@
         <h1 class="text-center mb-4">Registered Complaints</h1>
 
         <!-- Search Bar -->
-        <div class="search-bar">
-            <span class="search-icon"><i class="bi bi-search"></i></span>
-            <form method="post" action="{% url 'usersearch' %}">
-                {% csrf_token %}
-                <input type="text" name="query" placeholder="Search for complaints..." class="form-control">
-            </form>
-        </div>
+       
 
         <div class="table-container">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Subject</th>
                         <th>Description</th>
                         <th>Status</th>
                         <th>Created At</th>

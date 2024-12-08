@@ -343,9 +343,18 @@ def usersearch(request):
 
 
 def viewuser(req):
-    
-        data=User.objects.all()
-        return render(req,'police/viewuser.html', {'data':data})
+    query = req.POST.get('query', '')  # Get the search query from the POST request
+    if query:
+        # Filter users based on the search query (case-insensitive search)
+        data = User.objects.filter(
+            Q(username__icontains=query) |
+            Q(Email__icontains=query) |
+            Q(phonenumber__icontains=query) |
+            Q(location__icontains=query)
+        )
+    else:
+        data = User.objects.all()  # Return all users if no query is provided
+    return render(req, 'police/viewuser.html', {'data': data})
     
 
 
@@ -389,27 +398,55 @@ def adminhome(req):
     data=Complaint.objects.all()
     return render(req,'admin/viewcomplaint.html',{'data':data})
 
+
+
 @login_required
 def viewusers(req):
     if not req.user.is_superuser:
-        return redirect(login)
-    data = User.objects.all()
-    return render(req, 'admin/viewusers.html', {'data': data})
+        return redirect('login')  # Update 'login' with the appropriate login URL name
+
+    query = req.POST.get('query', '')  # Get the search query from the form
+    if query:
+        # Filter users by username, email, or any other relevant field
+        data = User.objects.filter(
+            Q(username__icontains=query) |
+            Q(Email__icontains=query) 
+               # Optional: filter by last name
+        )
+    else:
+        data = User.objects.all()  # Display all users if no search query is provided
+
+    return render(req, 'admin/viewusers.html', {'data': data, 'query': query})
+
+
 
 def adminhome(req):
     return render(req,'admin/adminhome.html')
 
-def viewpolice(req):
-    data=Police.objects.all()
-    return render(req,'admin/viewpolice.html',{'data':data})
 
-# def viewusers(req):
-#     data=User.objects.all()
-#     return render(req,'admin/viewusers.html',{'data':data})
+
+def viewpolice(req):
+    query = req.POST.get('query', '')  
+    if query:
+        data = Police.objects.filter(
+            Q(name__icontains=query)  )
+    else:
+        data = Police.objects.all()  
+    return render(req, 'admin/viewpolice.html', {'data': data, 'query': query})
+
+
 
 def viewcomplaint(req):
-    data=Complaint.objects.all()
-    return render(req,'admin/viewcomplaint.html',{'data':data})
+    query = req.POST.get('query', '')  # Retrieve the search query from the POST request
+    if query:
+        # Filter complaints based on the query in subject or description
+        data = Complaint.objects.filter(
+            Q(subject__icontains=query) | Q(description__icontains=query)
+        )
+    else:
+        data = Complaint.objects.all()  # Return all complaints if no query is provided
+    
+    return render(req, 'admin/viewcomplaint.html', {'data': data, 'query': query})
 
 def addstation(req):
     if req.method=='POST':

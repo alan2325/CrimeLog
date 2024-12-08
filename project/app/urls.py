@@ -31,7 +31,7 @@ path('viewpolices',views.viewpolices),
 path('police_reg',views.police_reg),
 path('policehome',views.policehome),
 path('view_complaints/', views.view_complaints, name='view_complaints'),
-path('viewuser',views.viewuser),
+path('viewuser',views.viewuser,name='viewuser'),
 path("complainthistory/", views.registered_complaints, name="complainthistory"),
 path('delete/<int:id>',views.delete),
 path('chats/<int:id>', views.chats, name='chats'),
@@ -44,9 +44,9 @@ path('usersearch/', views.usersearch, name='usersearch'),
 #### Admin
 
 path('adminhome',views.adminhome),
-path('viewpolice',views.viewpolice),
-path('viewusers',views.viewusers),
-path('viewcomplaint',views.viewcomplaint),
+path('viewpolice',views.viewpolice,name='viewpolice'),
+path('viewusers',views.viewusers,name='viewusers'),
+path('viewcomplaint',views.viewcomplaint,name='viewcomplaint'),
 path('addstation',views.addstation),
 
 

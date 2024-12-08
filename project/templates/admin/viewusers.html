@@ -103,6 +103,16 @@
                 </ul>
             </div>
         </div>
+        <div class="search-bar">
+            <span class="search-icon"><i class="bi bi-search"></i></span>
+            <form method="post" action="{% url 'viewusers' %}">
+                {% csrf_token %}
+                <input class="form-control" type="text" name="query" placeholder="Search by username, email, or name..." value="{{ query|default:'' }}">
+                <button class="btn btn-primary" type="submit">Search</button>
+
+            </form>
+        </div>
+        
     </nav>
 
     <!-- Users Section -->
