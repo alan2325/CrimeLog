@@ -10,6 +10,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
 
 
 # from django.contrib.auth.decorators import login_required
@@ -214,10 +216,22 @@ def updateuserprofile(req):
 def userhistory(req):
     if 'user' in req.session:
         user = get_user(req)  
-        complaints = Complaint.objects.filter(user=user).order_by('-created_at')  # Fetch complaints specific to this user
-        return render(req, 'user/user_history.html', {'complaints': complaints})
+        query = req.POST.get('query', '')  # Get the search query from the POST request
+        if query:
+            # Search complaints by subject or description
+            complaints = Complaint.objects.filter(
+                user=user
+            ).filter(
+                Q(subject__icontains=query) | Q(description__icontains=query)
+            ).order_by('-created_at')
+        else:
+            # Fetch all complaints if no query is provided
+            complaints = Complaint.objects.filter(user=user).order_by('-created_at')
+        
+        return render(req, 'user/user_history.html', {'complaints': complaints, 'query': query})
     else:
         return redirect(login)
+
 
 def chat(req,id):
     if 'user' in req.session:
@@ -241,14 +255,14 @@ def viewpolices(req):
 
 
 
-def policesearch(request):
-    query = request.POST.get('query')  # Get the search term from the request
-    police = []
-    if query:
-        police = Police.objects.filter(name=query)
-        
-    return render(request, 'user/policesearch.html', {'police': police, 'query': query})
-
+def police_search(request):
+    if request.method == 'POST':
+        query = request.POST.get('query', '').strip()
+        if query:
+            results = Police.objects.filter(name__icontains=query) | Police.objects.filter(Email__icontains=query)
+        else:
+            results = Police.objects.all()  # Show all if no query
+        return render(request, 'user/viewpolice.html', {'data': results})
     
 def contactus(req):
     if 'user' in req.session:

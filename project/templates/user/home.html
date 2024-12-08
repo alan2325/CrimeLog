@@ -244,14 +244,13 @@
                 </ul>
 
                       <!-- Search bar -->
-                <div class="search-bar">
-                    <span class="search-icon"><i class="bi bi-search"></i></span>
-                    <form class="d-flex" method="post" action="{% url 'policesearch' %}">
-                        {% csrf_token %}
-                        <input type="text" class="form-control me-2" name="query" placeholder="Search for ...">
-                        <!-- <button type="submit" class="btn btn-primary">Search</button> -->
-                      </form>
-                </div>
+                      <div class="search-bar">
+                        <span class="search-icon"><i class="bi bi-search"></i></span>
+                        <form method="post" action="{% url 'police_search' %}">
+                            {% csrf_token %}
+                            <input class="form-control" type="text" name="query" placeholder="Search by name or email...">
+                        </form>
+                    </div>
 
                 <!-- Profile Dropdown -->
                 <div class="dropdown ms-3">

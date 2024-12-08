@@ -201,13 +201,12 @@
                     </li> -->
                 </ul>
 
-                      <!-- Search bar -->
                 <div class="search-bar">
                     <span class="search-icon"><i class="bi bi-search"></i></span>
-                    <form method="post" action="{% url 'usersearch' %}">
+                    <form method="post" action="{% url 'userhistory' %}">
                         {% csrf_token %}
-                        <input class="form-control" type="text" name="query" placeholder="Search for...">
-                        <!-- <button type="submit" class="btn btn-primary" ></button> -->
+                        <input class="form-control" type="text" name="query" placeholder="Search by subject or description..." value="{{ query|default:'' }}">
+                        {% comment %} <button class="btn btn-primary" type="submit">Search</button> {% endcomment %}
                     </form>
                 </div>
 
