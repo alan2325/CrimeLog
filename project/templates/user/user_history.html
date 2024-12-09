@@ -188,7 +188,7 @@
             background-color: #2c2727;
 
             }
-            .search-bar{
+            .search-input-group{
                 margin-left: 20px;
             }
             #profileDropdown{
@@ -241,7 +241,7 @@
                     <form method="post" action="{% url 'userhistory' %}">
                         {% csrf_token %}
                         <div class="search-input-group">
-                            <span class="search-icon"><i class="bi bi-search"></i></span>
+                            <!-- <span class="search-icon"><i class="bi bi-search"></i></span> -->
                             <input class="form-control" type="text" name="query" placeholder="Search by subject or description..." value="{{ query|default:'' }}">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </div>
