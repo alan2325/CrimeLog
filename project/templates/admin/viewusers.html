@@ -27,6 +27,55 @@
             color: #91aafa;
         }
 
+
+        .search-input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: #fff;
+    width: 300px; /* Adjust width as needed */
+}
+
+.search-input-group form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-input-group input {
+    flex: 1;
+    border: none;
+    padding: 10px 10px;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.search-input-group button {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.search-input-group button:hover {
+    background-color: #0056b3;
+}
+
+.search-input-group input:focus {
+    border: none;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+
         .container {
             margin-top: 20px;
         }
@@ -103,13 +152,11 @@
                 </ul>
             </div>
         </div>
-        <div class="search-bar">
-            <span class="search-icon"><i class="bi bi-search"></i></span>
+        <div class="search-input-group">
             <form method="post" action="{% url 'viewusers' %}">
                 {% csrf_token %}
                 <input class="form-control" type="text" name="query" placeholder="Search by username, email, or name..." value="{{ query|default:'' }}">
                 <button class="btn btn-primary" type="submit">Search</button>
-
             </form>
         </div>
         

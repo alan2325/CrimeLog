@@ -282,7 +282,9 @@
                     <th>Description</th>
                     <th>Status</th>
                     <th>Date Submitted</th>
+                    <th>Station</th>
                     <th>Action</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -292,6 +294,7 @@
                     <td>{{ complaint.description }}</td>
                     <td>{{ complaint.status }}</td>
                     <td>{{ complaint.created_at }}</td>
+                    <td>{{complaint.police.name}}</td>
                     <td><a id="btn" href="../chat/{{complaint.pk}}">Chat</a></td>
                     {% comment %} <td><a id="btn" href="../message/">Ask Anything</a></td> {% endcomment %}
 
