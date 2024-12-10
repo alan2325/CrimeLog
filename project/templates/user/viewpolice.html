@@ -28,7 +28,6 @@
             color: #fff;
             transition: color 0.3s ease;
             margin: 10px;
-
         }
 
         .navbar .nav-link:hover {
@@ -208,6 +207,15 @@
                 margin: 10px;
             }
         }
+
+        @media only screen and (max-width:  1200px) {
+            .search-input-group{
+                max-width: 200px;
+            }
+            #srch-btn{
+                max-width: 70px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -257,7 +265,7 @@
                         <form method="post" action="{% url 'police_search' %}">
                             {% csrf_token %}
                             <input class="form-control" type="text" name="query" placeholder="Search by name or email...">
-                            <button class="btn btn-primary" type="submit">Search</button>
+                            <button class="btn btn-primary" id="srch-btn" type="submit">Search</button>
                         </form>
                     </div>
                     

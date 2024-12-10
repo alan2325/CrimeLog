@@ -11,7 +11,13 @@
     <title>CrimeLog</title>
     <style>
 
-        #nav {
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+
+#nav {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             background-color: #343a40;
             height: 80px;
@@ -133,43 +139,59 @@
 
 
            /* Container for the cards */
-           .card-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px; /* space between cards */
-        }
+   /* Container for the cards */
+   .card-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Default: 1 card per row (small screens) */
+    gap: 50px; /* Space between cards */
+    justify-content: center; /* Center align the grid horizontally */
+    padding: 20px;
+    max-width: 800px; /* Restrict the grid width to prevent excess space */
+    margin: 0 auto; /* Center the container itself */
+}
 
-        .card {
-            display: grid;
-            grid-template-rows: auto 1fr; /* Two rows: image and content */
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: white;
-            max-width: 400px;
-        }
 
-        /* Image style */
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover; /* Ensure the image covers the area without distorting */
-        }
 
-        /* Content part (h3, p) */
-        .card-content {
-            padding: 15px;
-        }
+/* Card link styling */
+.card-link {
+    text-decoration: none;
+    margin: 0px;
+}
 
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 10px;
-        }
+/* Card styling */
+.card {
+    display: grid;
+    grid-template-rows: auto 1fr; /* Two rows: image and content */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    max-width: 400px; /* Optional to restrict the card size */
+}
 
-        .card p {
-            font-size: 1rem;
-            color: #666;
-        }
+/* Image style */
+.card img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover; /* Ensure the image covers the area without distorting */
+}
+
+/* Content styling */
+.card-content {
+    padding: 15px;
+    height: 150px;
+}
+
+.card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 1rem;
+    color: #666;
+}
+
 
        
         /* responsive */
@@ -186,15 +208,18 @@
             #profileDropdown{
                 margin: 10px;
             }
-            .card-container {
+            .card{
+                min-width: 100%;
+            }
+            /* .card-container { */
                 /* grid-template-columns: repeat(2, 1fr);  */
-                margin-left: 10%;
-            }
-            .card {
+                /* margin-left: 10%; */
+            /* } */
+            /* .card {
                 max-width: 300px;
-            }
+            } */
         }  
-        @media (min-width: 1200px) {
+        /* @media (min-width: 992px) {
             .card-container {
                 grid-template-columns: repeat(2, 1fr); 
                 margin-left: 13%;
@@ -202,8 +227,8 @@
             .card {
                 width: 500px;
             }
-        }
-        @media (max-width: 1200px) {
+        } */
+        /* @media (max-width: 1200px) {
             .card-container {
                 grid-template-columns: repeat(2, 1fr); 
                 margin-left: 7%;
@@ -211,7 +236,7 @@
             .card {
                 min-width: 300px;
             }
-        }
+        } */
 
         @media (max-width: 768px) {
 
@@ -219,7 +244,7 @@
                 max-height: 50px;
                 max-width: 200px;
             }
-            .card-container {
+            /* .card-container {
                 grid-template-columns: repeat(1, 1fr); 
                 margin-left: -10px;
                 
@@ -230,11 +255,37 @@
             }
             .card {
                 max-width: 400px;
-            }
+            } */
             #home{
                 height: 200px;
             }
         }
+        @media (min-width: 768px) {
+    .card-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .card-container {
+        padding: 40px; /* Add extra spacing if needed */
+        gap: 100px;
+    }
+    .card{
+        min-width: 500px;
+    }
+}
+
+@media only screen and (max-width:  1200px) {
+            .search-input-group{
+                max-width: 200px;
+            }
+            #srch-btn{
+                max-width: 70px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -284,7 +335,7 @@
                         <form method="post" action="{% url 'police_search' %}">
                             {% csrf_token %}
                             <input class="form-control" type="text" name="query" placeholder="Search by name or email...">
-                            <button class="btn btn-primary" type="submit">Search</button>
+                            <button class="btn btn-primary" id="srch-btn" type="submit">Search</button>
                         </form>
                     </div>
 
@@ -321,63 +372,51 @@
     <div class="container py-5">
         <div class="card-container">
             <!-- Card 1 -->
-            <a class="nav-link" href="../submit_complaint">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card">
-                        <img src="../static/images/compl(1).jpg" alt="Card Image">
-                        <div class="card-content">
-                            <h3>New Complaints</h3>
-                            <p>Submit and track your complaints effortlessly. Keep us informed about issues that matter to you, and we’ll ensure timely resolutions.</p>
-                        </div>
+            <a class="card-link" href="../submit_complaint">
+                <div class="card">
+                    <img src="../static/images/compl(1).jpg" alt="Card Image">
+                    <div class="card-content">
+                        <h3>New Complaints</h3>
+                        <p>Submit and track your complaints effortlessly. Keep us informed about issues that matter to you, and we’ll ensure timely resolutions.</p>
                     </div>
                 </div>
             </a>        
     
             <!-- Card 2 -->
-            <a class="nav-link" href="../userhistory">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card">
-                        <img src="../static/images/history.webp" alt="Card Image">
-                        <div class="card-content">
-                            <h3>User History</h3>
-                            <p>Access and review your past interactions, submissions, and activities. Stay informed with a detailed history of your account.</p>
-
-                        </div>
+            <a class="card-link" href="../userhistory">
+                <div class="card">
+                    <img src="../static/images/history.webp" alt="Card Image">
+                    <div class="card-content">
+                        <h3>User History</h3>
+                        <p>Access and review your past interactions, submissions, and activities. Stay informed with a detailed history of your account.</p>
                     </div>
                 </div>
             </a>        
-
     
             <!-- Card 3 -->
-            <a class="nav-link" href="../userchat">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card">
-                        <img src="../static/images/chat.webp" alt="Card Image">
-                        <div class="card-content">
-                            <h3>About Us</h3>
-                            <p>Learn more about our mission, values, and the team behind our services. Discover how we strive to make a difference.</p>
-
-                        </div>
+            <a class="card-link" href="../userchat">
+                <div class="card">
+                    <img src="../static/images/chat.webp" alt="Card Image">
+                    <div class="card-content">
+                        <h3>About Us</h3>
+                        <p>Learn more about our mission, values, and the team behind our services. Discover how we strive to make a difference.</p>
                     </div>
                 </div>
-            </a>   
+            </a>        
     
             <!-- Card 4 -->
-            <a class="nav-link" href="../contactus">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card">
-                        <img src="../static/images/contactus(1)(1).jpg" alt="Card Image">
-                        <div class="card-content">
-                            <h3>Contact Us</h3>
-                                <p>Reach out to us with your questions, feedback, or concerns. We're here to help and look forward to hearing from you.</p>
-
-                        </div>
+            <a class="card-link" href="../contactus">
+                <div class="card">
+                    <img src="../static/images/contactus(1)(1).jpg" alt="Card Image">
+                    <div class="card-content">
+                        <h3>Contact Us</h3>
+                        <p>Reach out to us with your questions, feedback, or concerns. We're here to help and look forward to hearing from you.</p>
                     </div>
                 </div>
-            </a>   
-
+            </a>        
         </div>
     </div>
+    
     <footer style="background-color: #2c3e50; color: #ecf0f1; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
         <div style="max-width: 1200px; margin: 0 auto;">
     
@@ -390,7 +429,7 @@
                 <a href="../userhome" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">Home</a>
                 <a href="../submit_complaint" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">File a Complaint</a>
                 <a href="../userhistory" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">Track Complaint Status</a>
-                <a href="../userchat" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">Ask a Question</a>
+                <!-- <a href="../userchat" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">Ask a Question</a> -->
                 <a href="../contactus" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">Contact Us</a>
             </div>
     

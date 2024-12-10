@@ -9,6 +9,12 @@
     <title>CrimeLog</title>
     <style>
 
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* navbar */
         #nav {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             background-color: #343a40;
@@ -37,62 +43,59 @@
             background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
         }
 
-        /* .search-bar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%; 
-            margin: 10px 0;
-        } */
-        
         .search-input-group {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ced4da;
-            border-radius: 25px;
-            overflow: hidden;
-            background-color: #fff;
-            width: 300px; /* Adjust width as needed */
-        }
-        
-        .search-input-group input {
-            flex: 1;
-            border: none;
-            padding: 10px 10px 10px 40px;
-            outline: none;
-            font-size: 0.9rem;
-        }
-        
-        .search-input-group .search-icon {
-            position: absolute;
-            left: 15px;
-            color: #6c757d;
-            font-size: 1rem;
-            pointer-events: none;
-        }
-        
-        .search-input-group button {
-            background-color: #007bff;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border-top-right-radius: 25px;
-            border-bottom-right-radius: 25px;
-            transition: background-color 0.3s ease;
-        }
-        
-        .search-input-group button:hover {
-            background-color: #0056b3;
-        }
-        
-        .search-input-group input:focus {
-            border: none;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: #fff;
+    width: 300px; /* Adjust width as needed */
+}
+
+/* .search-input-group .search-icon {
+    position: absolute;
+    left: 15px;
+    color: #6c757d;
+    font-size: 1rem;
+    pointer-events: none;
+} */
+
+.search-input-group form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-input-group input {
+    flex: 1;
+    border: none;
+    padding: 10px 10px 10px 40px; /* Padding to create space for the icon */
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.search-input-group button {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.search-input-group button:hover {
+    background-color: #0056b3;
+}
+
+.search-input-group input:focus {
+    border: none;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
 
         /* Profile dropdown styles */
         .profile-img {
@@ -195,7 +198,17 @@
             #profileDropdown{
                 margin: 10px;
             }
-        }  
+        } 
+        
+        
+        @media only screen and (max-width:  1200px) {
+            .search-input-group{
+                max-width: 200px;
+            }
+            #srch-btn{
+                max-width: 70px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -244,7 +257,7 @@
                         <div class="search-input-group">
                             <!-- <span class="search-icon"><i class="bi bi-search"></i></span> -->
                             <input class="form-control" type="text" name="query" placeholder="Search by subject or description..." value="{{ query|default:'' }}">
-                            <button class="btn btn-primary" type="submit">Search</button>
+                            <button class="btn btn-primary" id="srch-btn" type="submit">Search</button>
                         </div>
                     </form>
                 </div>
