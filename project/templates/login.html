@@ -196,6 +196,28 @@
             margin-top: 30px;
             text-align: center;
         }
+        .alert {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .alert-warning {
+            background-color: #fff4e5;
+            border: 1px solid #ffcc80;
+            color: #cc8400;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            color: #842029;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
     </style>
   </head>
   <body>
@@ -203,6 +225,14 @@
       <div class="forms">
         <div class="form login">
           <span class="title">Login</span>
+          {% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 
           <form action="" method="POST">
             {% csrf_token %}
@@ -216,14 +246,13 @@
               <i class="uil uil-eye-slash showHidePw"></i>
             </div>
 
-            <div class="checkbox-text">
+            {% comment %} <div class="checkbox-text">
               <div class="checkbox-content">
                 <input type="checkbox" id="logCheck" />
                 <label for="logCheck" class="text">Remember me</label>
               </div>
 
-              <!-- <a href="#" class="text">Forgot password?</a> -->
-            </div>
+            </div> {% endcomment %}
 
             <div class="input-field button">
               <input type="submit" value="Login" />
@@ -240,6 +269,15 @@
 
       </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 600);
+            });
+        }, 3000);
+        
+    </script>
   </body>
 </html>

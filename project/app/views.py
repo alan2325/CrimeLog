@@ -11,6 +11,9 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+import pytesseract
+from PIL import Image
+import re
 
 
 
@@ -50,14 +53,20 @@ def login(req):
 
         # Handle normal user login
         try:
-            user = User.objects.get(Email=email, password=password)
-            req.session['user'] = user.Email
-            return redirect(userhome)
+            user = User.objects.get(Email=email)
+            if user.password == password:  # Ensure password matches
+                req.session['user'] = user.Email
+                return redirect(userhome)
+            else:
+                messages.warning(req, "Incorrect password")
         except User.DoesNotExist:
             try:
-                police = Police.objects.get(Email=email, password=password)
-                req.session['police'] = police.Email
-                return redirect(view_complaints)
+                police = Police.objects.get(Email=email)
+                if police.password == password:
+                    req.session['police'] = police.Email
+                    return redirect(view_complaints)
+                else:
+                    messages.warning(req, "Incorrect password")
             except Police.DoesNotExist:
                 messages.warning(req, "Invalid email or password")
     
@@ -79,38 +88,87 @@ def logout(req):
 #################  user  #######################
 
 def user_reg(req):
+    if req.method == 'POST':
+        # Collect form data
+        name = req.POST['username']
+        email = req.POST['Email']
+        phonenumber = req.POST['phonenumber']
+        location = req.POST['location']
+        password = req.POST['password']
+        idproofimg = req.FILES.get('idproof')  # Get the uploaded file
 
-    if req.method=='POST':
-        name=req.POST['username']
-        email=req.POST['Email']
-        phonenumber=req.POST['phonenumber']
-        location=req.POST['location']
-        password=req.POST['password']
-         
-          
+        # Validate email format
         try:
             validate_email(email)
         except ValidationError:
-            messages.warning(req, "Invalid email format, please enter a valid email.")
+            messages.warning(req, "Invalid email format. Please enter a valid email.")
             return render(req, 'user/user_reg.html')
 
         # Validate phone number (assuming 10-digit numeric format)
         if not re.match(r'^\d{10}$', phonenumber):
             messages.warning(req, "Invalid phone number. Please enter a valid 10-digit phone number.")
             return render(req, 'user/user_reg.html')
+
+        # Check if email already exists
+        if User.objects.filter(Email=email).exists():
+            messages.warning(req, "Email already exists. Please try another email.")
+            return render(req, 'user/user_reg.html')
+
+        # Process ID proof image using Tesseract OCR
+        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
         try:
-            data=User.objects.create(username=name,Email=email,phonenumber=phonenumber,location=location,password=password)
+            # Open the uploaded image file
+            image = Image.open(idproofimg)
+
+            # Perform OCR on the image
+            text = pytesseract.image_to_string(image)
+
+            # Use regex to find 12-digit numbers
+            pattern = r'\b(?:\d\s?){12}\b'
+            matches = re.findall(pattern, text)
+
+            # Clean up matches to remove spaces
+            matches = [''.join(re.findall(r'\d', match)) for match in matches]
+
+            if matches:
+                # If a 12-digit number is found, use the first one (assuming Aadhaar number)
+                idproof_number = matches[0]
+            else:
+                messages.warning(req, "Valid Aadhaar card number not found in the uploaded ID proof.")
+                return render(req, 'user/user_reg.html')
+
+        except Exception as e:
+            messages.error(req, f"Error processing ID proof image: {str(e)}")
+            return render(req, 'user/user_reg.html')
+
+        # Save user data if all validations pass
+        try:
+            data = User.objects.create(
+                username=name,
+                Email=email,
+                phonenumber=phonenumber,
+                location=location,
+                password=password,
+                idproof=idproof_number  # Save the extracted Aadhaar number
+            )
             data.save()
-            # Validate email
-            subject = 'Registration details '
-            message = 'ur account uname {}  and password {}'.format(name,password)
-            from_email = settings.EMAIL_HOST_USER
-            recipient_list = [email]
-            send_mail(subject, message, from_email, recipient_list,fail_silently=False)
-            return redirect(login)
-        except:
-            messages.warning(req, "Email Already Exits , Try Another Email.")
-    return render(req,'user/user_reg.html')
+
+            # # Send confirmation email
+            # subject = 'Registration details'
+            # message = f'Your account username is {name} and password is {password}'
+            # from_email = settings.EMAIL_HOST_USER
+            # recipient_list = [email]
+            # send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+            messages.success(req, "Registration successful! You can now log in.")
+            return redirect('login')  # Replace 'login' with the name of your login URL pattern
+
+        except Exception as e:
+            messages.error(req, f"An error occurred during registration: {str(e)}")
+
+    return render(req, 'user/user_reg.html')
+
 
 def userhome(req):
     if 'user' in req.session:
