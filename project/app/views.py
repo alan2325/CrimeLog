@@ -162,7 +162,7 @@ def user_reg(req):
             # send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
             messages.success(req, "Registration successful! You can now log in.")
-            return redirect('login')  # Replace 'login' with the name of your login URL pattern
+            return redirect(login)  # Replace 'login' with the name of your login URL pattern
 
         except Exception as e:
             messages.error(req, f"An error occurred during registration: {str(e)}")
