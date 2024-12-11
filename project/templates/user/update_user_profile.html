@@ -314,15 +314,7 @@ label {
                     </li> -->
                 </ul>
 
-                      <!-- Search bar -->
-                <!-- <div class="search-bar">
-                    <span class="search-icon"><i class="bi bi-search"></i></span>
-                    <form method="post" action="{% url 'usersearch' %}">
-                        {% csrf_token %}
-                        <input class="form-control" type="text" name="query" placeholder="Search for...">
-                        <button type="submit" class="btn btn-primary" ></button>
-                    </form>
-                </div> -->
+                     
 
                 <!-- Profile Dropdown -->
                 <div class="dropdown ms-3">
@@ -354,7 +346,7 @@ label {
         <div class="profile-image-section">
             <div class="profile-image-wrapper">
                 <img 
-                    src="{{ data.profile_picture_url | default:'/static/images/default-profile.png' }}" 
+                    src="{{ data.profile_picture_url | default:'../static/images/avtar.jpg' }}" 
                     alt="Profile Image" 
                     class="profile-image" 
                     id="profile-img"
