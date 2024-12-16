@@ -94,6 +94,9 @@
 
         /* ######################## profile card ######################### */
 
+        .card-body{
+            justify-items: center;
+        }
 
         .profile-container {
     background-color: #fff;
@@ -160,12 +163,13 @@
                 max-height: 50px;
                 max-width: 200px;
             }
+        }    
 
-        @media only screen and (min-width: 600px) {
+        /* @media only screen and (min-width: 600px) {
             .profile-container{
                 margin-left: 14%;
             }
-        } 
+        }  */
         @media screen and (max-width: 600px) {
             .profile-container {
                 padding: 15px;
@@ -181,11 +185,11 @@
             }
         } 
 
-          @media only screen and (min-width: 992px) {
+          /* @media only screen and (min-width: 992px) {
             .profile-container{
                 margin-left: 35%;
             }
-        } 
+        }  */
 
         @media only screen and (max-width:  992px) {
             #mynavbar {
@@ -286,22 +290,23 @@
     </nav>
 
     <!-- ######################## profile card #########################  -->
-
-    <div class="profile-container">
-        <!-- Profile Image -->
-        <img src="../static/images/profile.png" alt="Profile Image" class="profile-image">
+    <div class="card-body">
+        <div class="profile-container">
+            <!-- Profile Image -->
+            <img src="../static/images/profile.png" alt="Profile Image" class="profile-image">
+            
+            <!-- Profile Info -->
+            <div class="profile-info">
+                <p><strong>Name:</strong> {{data.username}}</p>
+                <p><strong>Phone:</strong> {{data.phonenumber}}</p>
+                <p><strong>Location:</strong> {{data.location}}</p>
+                <p><strong>Email:</strong> {{data.Email}}</p>
+            </div>
         
-        <!-- Profile Info -->
-        <div class="profile-info">
-            <p><strong>Name:</strong> {{data.username}}</p>
-            <p><strong>Phone:</strong> {{data.phonenumber}}</p>
-            <p><strong>Location:</strong> {{data.location}}</p>
-            <p><strong>Email:</strong> {{data.Email}}</p>
+            <!-- Edit Button -->
+            <button class="edit-button" onclick="window.location.href='../updateuserprofile'">Edit Profile</button>
         </div>
-    
-        <!-- Edit Button -->
-        <button class="edit-button" onclick="window.location.href='../updateuserprofile'">Edit Profile</button>
-    </div>
+    </div>    
     
 </body>
 </html>
