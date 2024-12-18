@@ -29,12 +29,16 @@
         }
 
         /* Table Styling */
+        .table-container{
+            overflow: scroll;
+        }
         table {
             background-color: #ffffff;
             border-collapse: collapse;
             margin: 20px auto;
             border-radius: 10px;
             overflow: hidden;
+            
         }
 
         table thead {
@@ -161,15 +165,16 @@
                     <li class="nav-item"><a class="nav-link" href="../viewcomplaint">Complaints</a></li>
                     <li class="nav-item"><a class="nav-link" href="../logout">Logout</a></li>
                 </ul>
+                <div class="search-input-group">
+                    <form method="post" action="{% url 'viewcomplaint' %}">
+                        {% csrf_token %}
+                        <input class="form-control" type="text" name="query" placeholder="Search by subject or description..." value="{{ query|default:'' }}">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="search-input-group">
-            <form method="post" action="{% url 'viewcomplaint' %}">
-                {% csrf_token %}
-                <input class="form-control" type="text" name="query" placeholder="Search by subject or description..." value="{{ query|default:'' }}">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </form>
-        </div>
+      
         
         
     </nav>
